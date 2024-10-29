@@ -14,6 +14,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import puppy.code.PowerUps.BalasExtra;
+import puppy.code.PowerUps.VidasExtra;
 
 public class PantallaJuego implements Screen {
 
@@ -29,10 +31,15 @@ public class PantallaJuego implements Screen {
     private int cantAsteroides;
     private ShapeRenderer shapeRenderer;
 
+
     private Nave4 nave;
     private  ArrayList<Ball2> balls1 = new ArrayList<>();
     private  ArrayList<Ball2> balls2 = new ArrayList<>();
     private  ArrayList<Bullet> balas = new ArrayList<>();
+    private BalasExtra auxBalasExtra = new BalasExtra();
+    private VidasExtra auxVidasExtra = new VidasExtra();
+
+    public int getScore() {return score;}
 
     public PantallaJuego(SpaceNavigation game, int ronda, int vidas, int score,
                          int velXAsteroides, int velYAsteroides, int cantAsteroides) {
@@ -112,6 +119,8 @@ public class PantallaJuego implements Screen {
                     balls2.remove(j);
                     j--;
                     score += 10;
+                    if(getScore() % 50 == 0) auxBalasExtra.aplicarPowerUp(this);
+                    if(getScore() % 300 == 0) auxVidasExtra.aplicarPowerUp(this);
                     break;
                 }
             }

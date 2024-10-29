@@ -30,9 +30,8 @@ public class Nave4 {
     private int tiempoVulnerable;
     private int tiempoVulnerableMax;
     private float hitboxReduction;
-    private boolean powerUpDisparo = false;
-    private int disparosPowerUp = 20;
-    private final int balasExtraPowerUp = 2;
+    private boolean estadoBalasExtra = false;
+    private int disparosPowerUp = 0;
 
     public Nave4(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
         this.vidas = 3;
@@ -60,9 +59,13 @@ public class Nave4 {
         manejarDisparo(juego);
     }
 
-    public void activarBalasExtra(){
-        this.powerUpDisparo = true;
-    }
+    public void setPowerUpDisparo(boolean estado){this.estadoBalasExtra = estado;}
+
+    public boolean getPowerUpDisparo(){return this.estadoBalasExtra;}
+
+    public void setDisparosPowerUp(int powerUp){this.disparosPowerUp = powerUp;}
+
+    public int getDisparosPowerUp(){return this.disparosPowerUp;}
 
     public void manejarVulnerabilidad() {
         if (tiempoVulnerable > 0) {
@@ -93,6 +96,22 @@ public class Nave4 {
     }
 
     private void manejarDisparo(PantallaJuego juego) {
+
+        if(!herido && Gdx.input.isKeyPressed(Input.Keys.Z) && getPowerUpDisparo()){
+            if(tiempoDisparo <= 0) {
+                Bullet balaIzq = new Bullet(spr.getX() + spr.getWidth() / 2 - 25, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
+                juego.agregarBala(balaIzq);
+                Bullet balaDer = new Bullet(spr.getX() + spr.getWidth() / 2 + 15, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
+                juego.agregarBala(balaDer);
+                Bullet balaCen = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
+                juego.agregarBala(balaCen);
+                tiempoDisparo = intervaloDisparo;
+                soundBala.play();
+                setDisparosPowerUp(getDisparosPowerUp() - 1);
+                if(disparosPowerUp == 0) setPowerUpDisparo(false);
+            }
+        }
+
         if(!herido && Gdx.input.isKeyPressed(Input.Keys.Z)){
             if(tiempoDisparo <= 0) {
                 Bullet bala = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
