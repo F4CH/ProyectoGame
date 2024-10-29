@@ -69,7 +69,9 @@ public class PantallaJuego implements Screen {
         nave.setVidas(vidas);
 
         enemigoBasico1 = new EnemigoBasico1(Gdx.graphics.getWidth()/2-50, 700, new Texture(Gdx.files.internal("fairy_red.png")));
+        EnemigoBasico1 enemigoBasico2 = new EnemigoBasico1(Gdx.graphics.getWidth()/2-150, 700, new Texture(Gdx.files.internal("fairy_blue.png")));
         enemigos.add(enemigoBasico1);
+        enemigos.add(enemigoBasico2);
     }
 
     public Nave4 getNave(){return nave;}
@@ -97,6 +99,10 @@ public class PantallaJuego implements Screen {
         Rectangle hitboxNave = nave.getHitbox();
         shapeRenderer.rect(hitboxNave.x, hitboxNave.y, hitboxNave.width, hitboxNave.height);
 
+        for(Enemigo e : enemigos){
+            e.draw(batch, this, delta);
+        }
+
         // Actualizar y dibujar balas
 
         for (int i = 0; i < balas.size(); i++) {
@@ -121,10 +127,6 @@ public class PantallaJuego implements Screen {
                 balas.remove(i);
                 i--;
             }
-        }
-
-        for(Enemigo e : enemigos){
-            e.draw(batch, this, delta);
         }
 
         // Actualizar proyectiles enemigos
