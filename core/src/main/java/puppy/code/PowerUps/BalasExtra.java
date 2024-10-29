@@ -11,6 +11,6 @@ public class BalasExtra implements PowerUp {
 
     @Override
     public void aplicarPowerUp(PantallaJuego pantalla){
-
+        pantalla.getNave().activarBalasExtra();
     }
 }

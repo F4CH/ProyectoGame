@@ -30,6 +30,9 @@ public class Nave4 {
     private int tiempoVulnerable;
     private int tiempoVulnerableMax;
     private float hitboxReduction;
+    private boolean powerUpDisparo = false;
+    private int disparosPowerUp = 20;
+    private final int balasExtraPowerUp = 2;
 
     public Nave4(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
         this.vidas = 3;
@@ -55,6 +58,10 @@ public class Nave4 {
         manejarRebote();
         spr.draw(batch);
         manejarDisparo(juego);
+    }
+
+    public void activarBalasExtra(){
+        this.powerUpDisparo = true;
     }
 
     public void manejarVulnerabilidad() {
