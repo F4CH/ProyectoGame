@@ -55,7 +55,7 @@ public class PantallaJuego implements Screen {
         // Inicializar assets; música de fondo y efectos de sonido
         explosionSound = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
         explosionSound.setVolume(1,0.5f);
-        gameMusic = Gdx.audio.newMusic(Gdx.files.internal("piano-loops.wav"));
+        gameMusic = Gdx.audio.newMusic(Gdx.files.internal("MusicGame.ogg"));
 
         gameMusic.setLooping(true);
         gameMusic.setVolume(0.5f);
@@ -98,6 +98,7 @@ public class PantallaJuego implements Screen {
         shapeRenderer.rect(hitboxNave.x, hitboxNave.y, hitboxNave.width, hitboxNave.height);
 
         // Actualizar y dibujar balas
+
         for (int i = 0; i < balas.size(); i++) {
             Bullet b = balas.get(i);
             b.update();
