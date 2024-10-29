@@ -1,5 +1,6 @@
 package puppy.code;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -33,6 +34,7 @@ public class PantallaJuego implements Screen {
 
 
     private EnemigoBasico1 enemigoBasico1;
+    private ArrayList<Enemigo> enemigos = new ArrayList<>();
     private ArrayList<Proyectil> proyectiles = new ArrayList<>();
 
     private Nave4 nave;
@@ -74,6 +76,7 @@ public class PantallaJuego implements Screen {
         nave.setVidas(vidas);
 
         enemigoBasico1 = new EnemigoBasico1(Gdx.graphics.getWidth()/2-50, 700, new Texture(Gdx.files.internal("fairy_red.png")));
+        enemigos.add(enemigoBasico1);
 
         /*// Crear asteroides
         Random r = new Random();
@@ -104,7 +107,7 @@ public class PantallaJuego implements Screen {
         dibujaEncabezado();
 
         nave.draw(batch, this);
-        enemigoBasico1.draw(batch, this, delta);
+        //enemigoBasico1.draw(batch, this, delta);
 
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -118,22 +121,28 @@ public class PantallaJuego implements Screen {
             Bullet b = balas.get(i);
             b.update();
             b.draw(batch);
-            for (int j = 0; j < balls1.size(); j++) {
-                if (b.checkCollision(balls1.get(j))) {
-                    explosionSound.play();
-                    balls1.remove(j);
-                    balls2.remove(j);
-                    j--;
-                    score += 10;
-                    if(getScore() % 50 == 0) auxBalasExtra.aplicarPowerUp(this);
-                    if(getScore() % 300 == 0) auxVidasExtra.aplicarPowerUp(this);
-                    break;
+            for (int j = 0; j < enemigos.size(); j++) {
+                Enemigo e = enemigos.get(j);
+                if (e.checkCollision(b)) {
+                    b.setDestroyed();
+                    if(e.estaDestruida()) {
+                        enemigos.remove(j);
+                        j--;
+                        score += 300;
+                        if(getScore() % 50 == 0) auxBalasExtra.aplicarPowerUp(this);
+                        if(getScore() % 300 == 0) auxVidasExtra.aplicarPowerUp(this);
+                        break;
+                    }
                 }
             }
             if (b.isDestroyed()) {
                 balas.remove(i);
                 i--;
             }
+        }
+
+        for(Enemigo e : enemigos){
+            e.draw(batch, this, delta);
         }
 
         // Actualizar proyectiles enemigos
@@ -182,12 +191,12 @@ public class PantallaJuego implements Screen {
         }
 
         // Verificar si el nivel está completo
-        /*if (balls1.isEmpty()) {
+        if (enemigos.isEmpty()) {
             Screen ss = new PantallaJuego(game, ronda + 1, nave.getVidas(), score, velXAsteroides + 3, velYAsteroides + 3, cantAsteroides + 10);
             ss.resize(1200, 800);
             game.setScreen(ss);
             dispose();
-        }*/
+        }
 
         batch.end();
         shapeRenderer.end();

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 
 public class Bullet {
 
@@ -35,8 +36,8 @@ public class Bullet {
     }
 
     // Verifica si ha colisionado con un asteroide y destruye la bala
-    public boolean checkCollision(Ball2 b2) {
-        if (spr.getBoundingRectangle().overlaps(b2.getArea())) {
+    public boolean checkCollision(Enemigo e) {
+        if (spr.getBoundingRectangle().overlaps(e.getHitbox())) {
             this.destroyed = true;
             return true;
         }
@@ -54,5 +55,13 @@ public class Bullet {
     // Getter para verificar si la bala está destruida
     public boolean isDestroyed() {
         return destroyed;
+    }
+
+    public void setDestroyed(){
+        this.destroyed = true;
+    }
+
+    public Rectangle getArea() {
+        return spr.getBoundingRectangle();
     }
 }

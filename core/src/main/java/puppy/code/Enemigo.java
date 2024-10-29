@@ -23,7 +23,6 @@ public abstract class Enemigo {
 
     public Enemigo(int x, int y, Texture tx){
         this.destruida = false;
-        this.vida = 5;
         this.tiempoDisparo = 0;
         this.intervaloDisparo = 0;
         this.timeSinceLastDirectionChange = 0;
@@ -47,10 +46,7 @@ public abstract class Enemigo {
 
     public abstract void manejarDisparo(PantallaJuego juego);
 
-    // Debe implementarse
-    /*public boolean checkCollision(){
-
-    }*/
+    public abstract boolean checkCollision(Bullet b);
 
     public boolean estaDestruida(){
         return destruida;

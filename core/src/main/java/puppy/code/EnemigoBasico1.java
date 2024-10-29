@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 public class EnemigoBasico1 extends Enemigo{
     public EnemigoBasico1(int x, int y, Texture tx){
         super(x, y, tx);
+        this.vida = 10;
         this.hitbox_default = 30;
         this.speed_default = 2;
         this.intervaloCambioDireccion = 1.5f;
@@ -90,5 +91,15 @@ public class EnemigoBasico1 extends Enemigo{
         // Disminuye el tiempo para el próximo disparo
         //tiempoDisparo -= Gdx.graphics.getDeltaTime();
         if(tiempoDisparo > 0) tiempoDisparo--;
+    }
+
+    @Override
+    public boolean checkCollision(Bullet b){
+        if (b.getArea().overlaps(this.getHitbox())){
+            vida--;
+            if (vida <= 0) destruida = true;
+            return true;
+        }
+        return false;
     }
 }
