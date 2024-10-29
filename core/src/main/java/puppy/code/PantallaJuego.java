@@ -15,75 +15,75 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
-
 public class PantallaJuego implements Screen {
 
-	private SpaceNavigation game;
-	private OrthographicCamera camera;
-	private SpriteBatch batch;
-	private Sound explosionSound;
-	private Music gameMusic;
-	private int score;
-	private int ronda;
-	private int velXAsteroides;
-	private int velYAsteroides;
-	private int cantAsteroides;
+    private SpaceNavigation game;
+    private OrthographicCamera camera;
+    private SpriteBatch batch;
+    private Sound explosionSound;
+    private Music gameMusic;
+    private int score;
+    private int ronda;
+    private int velXAsteroides;
+    private int velYAsteroides;
+    private int cantAsteroides;
     private ShapeRenderer shapeRenderer;
 
-	private Nave4 nave;
-	private  ArrayList<Ball2> balls1 = new ArrayList<>();
-	private  ArrayList<Ball2> balls2 = new ArrayList<>();
-	private  ArrayList<Bullet> balas = new ArrayList<>();
+    private Nave4 nave;
+    private  ArrayList<Ball2> balls1 = new ArrayList<>();
+    private  ArrayList<Ball2> balls2 = new ArrayList<>();
+    private  ArrayList<Bullet> balas = new ArrayList<>();
 
+    public PantallaJuego(SpaceNavigation game, int ronda, int vidas, int score,
+                         int velXAsteroides, int velYAsteroides, int cantAsteroides) {
+        this.game = game;
+        this.ronda = ronda;
+        this.score = score;
+        this.velXAsteroides = velXAsteroides;
+        this.velYAsteroides = velYAsteroides;
+        this.cantAsteroides = cantAsteroides;
 
-	public PantallaJuego(SpaceNavigation game, int ronda, int vidas, int score,
-			int velXAsteroides, int velYAsteroides, int cantAsteroides) {
-		this.game = game;
-		this.ronda = ronda;
-		this.score = score;
-		this.velXAsteroides = velXAsteroides;
-		this.velYAsteroides = velYAsteroides;
-		this.cantAsteroides = cantAsteroides;
-
-		batch = game.getBatch();
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800, 640);
+        batch = game.getBatch();
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, 800, 640);
         shapeRenderer = new ShapeRenderer();
-		//inicializar assets; musica de fondo y efectos de sonido
-		explosionSound = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
-		explosionSound.setVolume(1,0.5f);
-		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("piano-loops.wav")); //
+        // Inicializar assets; música de fondo y efectos de sonido
+        explosionSound = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
+        explosionSound.setVolume(1,0.5f);
+        gameMusic = Gdx.audio.newMusic(Gdx.files.internal("piano-loops.wav"));
 
-		gameMusic.setLooping(true);
-		gameMusic.setVolume(0.5f);
-		gameMusic.play();
+        gameMusic.setLooping(true);
+        gameMusic.setVolume(0.5f);
+        gameMusic.play();
 
-	    // cargar imagen de la nave, 64x64
-	    nave = new Nave4(Gdx.graphics.getWidth()/2-50,30,new Texture(Gdx.files.internal("MainShip3.png")),
-	    				Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")),
-	    				new Texture(Gdx.files.internal("Rocket2.png")),
-	    				Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
+        // Cargar imagen de la nave, 64x64
+        nave = new Nave4(Gdx.graphics.getWidth()/2-50,30,new Texture(Gdx.files.internal("MainShip3.png")),
+            Gdx.audio.newSound(Gdx.files.internal("hurt.ogg")),
+            new Texture(Gdx.files.internal("Rocket2.png")),
+            Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
         nave.setVidas(vidas);
-        //crear asteroides
-        Random r = new Random();
-	    for (int i = 0; i < cantAsteroides; i++) {
-	        Ball2 bb = new Ball2(r.nextInt((int)Gdx.graphics.getWidth()),
-	  	            50+r.nextInt((int)Gdx.graphics.getHeight()-50),
-	  	            20+r.nextInt(10), velXAsteroides+r.nextInt(4), velYAsteroides+r.nextInt(4),
-	  	            new Texture(Gdx.files.internal("aGreyMedium4.png")));
-	  	    balls1.add(bb);
-	  	    balls2.add(bb);
-	  	}
-	}
 
-	public void dibujaEncabezado() {
-		CharSequence str = "Vidas: "+nave.getVidas()+" Ronda: "+ronda;
-		game.getFont().getData().setScale(2f);
-		game.getFont().draw(batch, str, 10, 30);
-		game.getFont().draw(batch, "Score:"+this.score, Gdx.graphics.getWidth()-150, 30);
-		game.getFont().draw(batch, "HighScore:"+game.getHighScore(), Gdx.graphics.getWidth()/2-100, 30);
-	}
-	@Override
+        // Crear asteroides
+        Random r = new Random();
+        for (int i = 0; i < cantAsteroides; i++) {
+            Ball2 bb = new Ball2(r.nextInt((int)Gdx.graphics.getWidth()),
+                50 + r.nextInt((int)Gdx.graphics.getHeight() - 50),
+                20 + r.nextInt(10), velXAsteroides + r.nextInt(4), velYAsteroides + r.nextInt(4),
+                new Texture(Gdx.files.internal("aGreyMedium4.png")));
+            balls1.add(bb);
+            balls2.add(bb);
+        }
+    }
+
+    public void dibujaEncabezado() {
+        CharSequence str = "Vidas: " + nave.getVidas() + " Ronda: " + ronda;
+        game.getFont().getData().setScale(2f);
+        game.getFont().draw(batch, str, 10, 30);
+        game.getFont().draw(batch, "Score:" + this.score, Gdx.graphics.getWidth() - 150, 30);
+        game.getFont().draw(batch, "HighScore:" + game.getHighScore(), Gdx.graphics.getWidth() / 2 - 100, 30);
+    }
+
+    @Override
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
@@ -98,8 +98,7 @@ public class PantallaJuego implements Screen {
         Rectangle hitboxNave = nave.getHitbox();
         shapeRenderer.rect(hitboxNave.x, hitboxNave.y, hitboxNave.width, hitboxNave.height);
 
-
-        // Actualizar y dibujar balas, independientemente del estado de la nave
+        // Actualizar y dibujar balas
         for (int i = 0; i < balas.size(); i++) {
             Bullet b = balas.get(i);
             b.update();
@@ -111,6 +110,7 @@ public class PantallaJuego implements Screen {
                     balls2.remove(j);
                     j--;
                     score += 10;
+                    break;
                 }
             }
             if (b.isDestroyed()) {
@@ -170,46 +170,30 @@ public class PantallaJuego implements Screen {
         shapeRenderer.end();
     }
 
-
     public boolean agregarBala(Bullet bb) {
-    	return balas.add(bb);
+        return balas.add(bb);
     }
 
-	@Override
-	public void show() {
-		// TODO Auto-generated method stub
-		gameMusic.play();
-	}
+    @Override
+    public void show() {
+        gameMusic.play();
+    }
 
-	@Override
-	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
+    @Override
+    public void resize(int width, int height) {}
 
-	}
+    @Override
+    public void pause() {}
 
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
+    @Override
+    public void resume() {}
 
-	}
+    @Override
+    public void hide() {}
 
-	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-		this.explosionSound.dispose();
-		this.gameMusic.dispose();
-	}
-
+    @Override
+    public void dispose() {
+        this.explosionSound.dispose();
+        this.gameMusic.dispose();
+    }
 }

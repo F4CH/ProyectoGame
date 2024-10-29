@@ -5,41 +5,54 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-
 public class Bullet {
 
-	private int xSpeed;
-	private int ySpeed;
-	private boolean destroyed = false;
-	private Sprite spr;
+    private static final int DEFAULT_Y_SPEED = 3;
 
-	    public Bullet(float x, float y, int xSpeed, int ySpeed, Texture tx) {
-	    	spr = new Sprite(tx);
-	    	spr.setPosition(x, y);
-	        this.xSpeed = xSpeed;
-	        this.ySpeed = ySpeed + 3;
-	    }
-	    public void update() {
-	        spr.setPosition(spr.getX()+xSpeed, spr.getY()+ ySpeed);
-	        if (spr.getX() < 0 || spr.getX()+spr.getWidth() > Gdx.graphics.getWidth() ||spr.getY() < 0 || spr.getY()+spr.getHeight() > Gdx.graphics.getHeight()) {
-                destroyed = true;
-            }
-	    }
+    private int xSpeed;
+    private int ySpeed;
+    private boolean destroyed;
+    private Sprite spr;
 
-	    public void draw(SpriteBatch batch) {
-	    	spr.draw(batch);
-	    }
+    // Constructor
+    public Bullet(float x, float y, int xSpeed, int ySpeed, Texture tx) {
+        this.spr = new Sprite(tx);
+        this.spr.setPosition(x, y);
+        this.xSpeed = xSpeed;
+        this.ySpeed = ySpeed + DEFAULT_Y_SPEED;
+        this.destroyed = false;
+    }
 
-	    public boolean checkCollision(Ball2 b2) {
-	        if(spr.getBoundingRectangle().overlaps(b2.getArea())){
-	        	// Se destruyen ambos
-	            this.destroyed = true;
-	            return true;
+    // Actualiza la posición de la bala y verifica si está fuera de los límites
+    public void update() {
+        spr.setPosition(spr.getX() + xSpeed, spr.getY() + ySpeed);
+        checkBounds();
+    }
 
-	        }
-	        return false;
-	    }
+    // Dibuja la bala en el lote de sprites
+    public void draw(SpriteBatch batch) {
+        spr.draw(batch);
+    }
 
-	    public boolean isDestroyed() {return destroyed;}
+    // Verifica si ha colisionado con un asteroide y destruye la bala
+    public boolean checkCollision(Ball2 b2) {
+        if (spr.getBoundingRectangle().overlaps(b2.getArea())) {
+            this.destroyed = true;
+            return true;
+        }
+        return false;
+    }
 
+    // Verifica si la bala está fuera de los límites de la pantalla
+    private void checkBounds() {
+        if (spr.getX() < 0 || spr.getX() + spr.getWidth() > Gdx.graphics.getWidth() ||
+            spr.getY() < 0 || spr.getY() + spr.getHeight() > Gdx.graphics.getHeight()) {
+            destroyed = true;
+        }
+    }
+
+    // Getter para verificar si la bala está destruida
+    public boolean isDestroyed() {
+        return destroyed;
+    }
 }
