@@ -14,7 +14,7 @@ public class PantallaMenu implements Screen {
 
 	public PantallaMenu(SpaceNavigation game) {
 		this.game = game;
-        
+
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1200, 800);
 	}
@@ -29,7 +29,7 @@ public class PantallaMenu implements Screen {
 		game.getBatch().begin();
 		game.getFont().draw(game.getBatch(), "Bienvenido a Space Navigation !", 140, 400);
 		game.getFont().draw(game.getBatch(), "Pincha en cualquier lado o presiona cualquier tecla para comenzar ...", 100, 300);
-	
+
 		game.getBatch().end();
 
 		if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
@@ -39,42 +39,42 @@ public class PantallaMenu implements Screen {
 			dispose();
 		}
 	}
-	
-	
+
+
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		
+
 	}
-   
+
 }

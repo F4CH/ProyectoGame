@@ -12,60 +12,81 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Nave4 {
 
-	private boolean destruida = false;
-    private int vidas = 3;
-    private float xVel = 0;
-    private float yVel = 0;
+    //private static final int damage_default = 20;
+    private static final int hitbox_default = 30;
+    private static final int speed_default = 1;
+
+	private boolean destruida;
+    private int vidas;
+    private float xVel;
+    private float yVel;
     private Sprite spr;
     private Sound sonidoHerido;
     private Sound soundBala;
     private Texture txBala;
-    private boolean herido = false;
-    private int tiempoHeridoMax=50;
-    private int tiempoDisparo = 0;
-    private int intervaloDisparo = 10;
-    private int tiempoVulnerable = 0;
-    private int tiempoVulnerableMax = 120;
-    private float hitboxReduction = 30f;
+    private boolean herido;
+    private int tiempoDisparo;
+    private int intervaloDisparo;
+    private int tiempoVulnerable;
+    private int tiempoVulnerableMax;
+    private float hitboxReduction;
 
     public Nave4(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
+        this.vidas = 3;
+        this.destruida = false;
+        this.herido = false;
+        this.tiempoDisparo = 0;
+        this.intervaloDisparo = 10;
+        this.tiempoVulnerable = 0;
+        this.tiempoVulnerableMax = 120;
+        this.hitboxReduction = hitbox_default;
+
     	sonidoHerido = soundChoque;
     	this.soundBala = soundBala;
     	this.txBala = txBala;
+
     	spr = new Sprite(tx);
     	spr.setPosition(x, y);
-    	//spr.setOriginCenter();
     	spr.setBounds(x, y, 45, 45);
     }
     public void draw(SpriteBatch batch, PantallaJuego juego) {
-        float x = spr.getX();
-        float y = spr.getY();
-        int velocidad = 2;
+        manejarVulnerabilidad();
+        manejarMovimiento();
+        manejarRebote();
+        spr.draw(batch);
+        manejarDisparo(juego);
+    }
 
-        // Actualizar la vulnerabilidad
+    public void manejarVulnerabilidad() {
         if (tiempoVulnerable > 0) {
-            tiempoVulnerable--; // Reducir el contador de vulnerabilidad
-            herido = tiempoVulnerable > 0; // Herido solo mientras esté vulnerable
+            tiempoVulnerable--;
+            herido = tiempoVulnerable > 0;
         }
+        spr.setColor(herido ? 1 : 1, herido ? 0 : 1, 1 , 1);
+    }
 
-        // Movimiento de la nave
+    public void manejarMovimiento() {
         xVel = 0;
         yVel = 0;
 
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) xVel -= velocidad;
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) xVel += velocidad;
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) yVel -= velocidad;
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) yVel += velocidad;
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) xVel -= speed_default;
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) xVel += speed_default;
+        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) yVel -= speed_default;
+        if(Gdx.input.isKeyPressed(Input.Keys.UP)) yVel += speed_default;
 
-        float nuevoX = x + xVel;
-        float nuevoY = y + yVel;
+        spr.setPosition(spr.getX() + xVel, spr.getY() + yVel);
+    }
+
+    private void manejarRebote() {
+        float nuevoX = spr.getX() + xVel;
+        float nuevoY = spr.getY() + yVel;
         nuevoX = MathUtils.clamp(nuevoX, 0, Gdx.graphics.getWidth() - spr.getWidth());
         nuevoY = MathUtils.clamp(nuevoY, 0, Gdx.graphics.getHeight() - spr.getHeight());
         spr.setPosition(nuevoX, nuevoY);
-        spr.draw(batch);
+    }
 
-        // Disparo
-        if (!herido && Gdx.input.isKeyPressed(Input.Keys.Z)){
+    private void manejarDisparo(PantallaJuego juego) {
+        if(!herido && Gdx.input.isKeyPressed(Input.Keys.Z)){
             if(tiempoDisparo <= 0) {
                 Bullet bala = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
                 juego.agregarBala(bala);
@@ -74,12 +95,6 @@ public class Nave4 {
             }
         }
         if(tiempoDisparo > 0) tiempoDisparo--;
-
-        if(herido){
-            spr.setColor(1,0,0,1);
-        }else{
-            spr.setColor(1,1,1,1);
-        }
     }
 
     public boolean checkCollision(Ball2 b) {
@@ -103,10 +118,10 @@ public class Nave4 {
     }
 
     public boolean estaDestruido() {
-       return !herido && destruida;
+        return !herido && destruida;
     }
     public boolean estaHerido() {
- 	   return herido;
+        return herido;
     }
 
     public int getVidas() {return vidas;}
