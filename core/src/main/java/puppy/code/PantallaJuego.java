@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import puppy.code.PowerUps.BalasExtra;
+import puppy.code.PowerUps.PowerUp;
 import puppy.code.PowerUps.VidasExtra;
 
 public class PantallaJuego implements Screen {
@@ -27,9 +28,6 @@ public class PantallaJuego implements Screen {
     private Music gameMusic;
     private int score;
     private int ronda;
-    private int velXAsteroides;
-    private int velYAsteroides;
-    private int cantAsteroides;
     private ShapeRenderer shapeRenderer;
 
 
@@ -38,22 +36,17 @@ public class PantallaJuego implements Screen {
     private ArrayList<Proyectil> proyectiles = new ArrayList<>();
 
     private Nave4 nave;
-    private  ArrayList<Ball2> balls1 = new ArrayList<>();
-    private  ArrayList<Ball2> balls2 = new ArrayList<>();
-    private  ArrayList<Bullet> balas = new ArrayList<>();
+
+    private ArrayList<Bullet> balas = new ArrayList<>();
     private BalasExtra auxBalasExtra = new BalasExtra();
     private VidasExtra auxVidasExtra = new VidasExtra();
 
     public int getScore() {return score;}
 
-    public PantallaJuego(SpaceNavigation game, int ronda, int vidas, int score,
-                         int velXAsteroides, int velYAsteroides, int cantAsteroides) {
+    public PantallaJuego(SpaceNavigation game, int ronda, int vidas, int score) {
         this.game = game;
         this.ronda = ronda;
         this.score = score;
-        this.velXAsteroides = velXAsteroides;
-        this.velYAsteroides = velYAsteroides;
-        this.cantAsteroides = cantAsteroides;
 
         batch = game.getBatch();
         camera = new OrthographicCamera();
@@ -77,17 +70,6 @@ public class PantallaJuego implements Screen {
 
         enemigoBasico1 = new EnemigoBasico1(Gdx.graphics.getWidth()/2-50, 700, new Texture(Gdx.files.internal("fairy_red.png")));
         enemigos.add(enemigoBasico1);
-
-        /*// Crear asteroides
-        Random r = new Random();
-        for (int i = 0; i < cantAsteroides; i++) {
-            Ball2 bb = new Ball2(r.nextInt((int)Gdx.graphics.getWidth()),
-                50 + r.nextInt((int)Gdx.graphics.getHeight() - 50),
-                20 + r.nextInt(10), velXAsteroides + r.nextInt(4), velYAsteroides + r.nextInt(4),
-                new Texture(Gdx.files.internal("aGreyMedium4.png")));
-            balls1.add(bb);
-            balls2.add(bb);
-        }*/
     }
 
     public Nave4 getNave(){return nave;}
@@ -107,7 +89,6 @@ public class PantallaJuego implements Screen {
         dibujaEncabezado();
 
         nave.draw(batch, this);
-        //enemigoBasico1.draw(batch, this, delta);
 
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -152,20 +133,6 @@ public class PantallaJuego implements Screen {
             p.draw(batch);
         }
 
-        // Actualizar movimiento de asteroides
-        for (Ball2 ball : balls1) {
-            ball.update();
-        }
-
-        // Colisiones entre asteroides
-        for (int i = 0; i < balls1.size(); i++) {
-            Ball2 ball1 = balls1.get(i);
-            for (int j = i + 1; j < balls2.size(); j++) {
-                Ball2 ball2 = balls2.get(j);
-                ball1.checkCollision(ball2);
-            }
-        }
-
         // Dibujar nave y verificar colisiones solo si no está destruida
         nave.draw(batch, this);
         for (int i = 0; i < proyectiles.size(); i++) {
@@ -192,7 +159,7 @@ public class PantallaJuego implements Screen {
 
         // Verificar si el nivel está completo
         if (enemigos.isEmpty()) {
-            Screen ss = new PantallaJuego(game, ronda + 1, nave.getVidas(), score, velXAsteroides + 3, velYAsteroides + 3, cantAsteroides + 10);
+            Screen ss = new PantallaJuego(game, ronda + 1, nave.getVidas(), score);
             ss.resize(1200, 800);
             game.setScreen(ss);
             dispose();
