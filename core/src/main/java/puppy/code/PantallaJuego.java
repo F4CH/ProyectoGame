@@ -75,6 +75,8 @@ public class PantallaJuego implements Screen {
         }
     }
 
+    public Nave4 getNave(){return nave;}
+
     public void dibujaEncabezado() {
         CharSequence str = "Vidas: " + nave.getVidas() + " Ronda: " + ronda;
         game.getFont().getData().setScale(2f);
