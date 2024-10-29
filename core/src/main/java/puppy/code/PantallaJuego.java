@@ -32,6 +32,9 @@ public class PantallaJuego implements Screen {
     private ShapeRenderer shapeRenderer;
 
 
+    private EnemigoBasico1 enemigoBasico1;
+    private ArrayList<Proyectil> proyectiles = new ArrayList<>();
+
     private Nave4 nave;
     private  ArrayList<Ball2> balls1 = new ArrayList<>();
     private  ArrayList<Ball2> balls2 = new ArrayList<>();
@@ -70,7 +73,9 @@ public class PantallaJuego implements Screen {
             Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
         nave.setVidas(vidas);
 
-        // Crear asteroides
+        enemigoBasico1 = new EnemigoBasico1(Gdx.graphics.getWidth()/2-50, 700, new Texture(Gdx.files.internal("fairy_red.png")));
+
+        /*// Crear asteroides
         Random r = new Random();
         for (int i = 0; i < cantAsteroides; i++) {
             Ball2 bb = new Ball2(r.nextInt((int)Gdx.graphics.getWidth()),
@@ -79,7 +84,7 @@ public class PantallaJuego implements Screen {
                 new Texture(Gdx.files.internal("aGreyMedium4.png")));
             balls1.add(bb);
             balls2.add(bb);
-        }
+        }*/
     }
 
     public Nave4 getNave(){return nave;}
@@ -99,6 +104,7 @@ public class PantallaJuego implements Screen {
         dibujaEncabezado();
 
         nave.draw(batch, this);
+        enemigoBasico1.draw(batch, this, delta);
 
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -130,6 +136,13 @@ public class PantallaJuego implements Screen {
             }
         }
 
+        // Actualizar proyectiles enemigos
+        for(int i = 0; i < proyectiles.size(); i++){
+            Proyectil p = proyectiles.get(i);
+            p.update();
+            p.draw(batch);
+        }
+
         // Actualizar movimiento de asteroides
         for (Ball2 ball : balls1) {
             ball.update();
@@ -146,14 +159,13 @@ public class PantallaJuego implements Screen {
 
         // Dibujar nave y verificar colisiones solo si no está destruida
         nave.draw(batch, this);
-        for (int i = 0; i < balls1.size(); i++) {
-            Ball2 b = balls1.get(i);
-            b.draw(batch);
+        for (int i = 0; i < proyectiles.size(); i++) {
+            Proyectil p = proyectiles.get(i);
+            p.draw(batch);
 
             // Verificar colisión solo si la nave no está en estado de vulnerabilidad
-            if (!nave.estaHerido() && nave.checkCollision(b)) {
-                balls1.remove(i);
-                balls2.remove(i);
+            if (!nave.estaHerido() && nave.checkCollision(p)) {
+                proyectiles.remove(i);
                 i--;
             }
         }
@@ -170,12 +182,12 @@ public class PantallaJuego implements Screen {
         }
 
         // Verificar si el nivel está completo
-        if (balls1.isEmpty()) {
+        /*if (balls1.isEmpty()) {
             Screen ss = new PantallaJuego(game, ronda + 1, nave.getVidas(), score, velXAsteroides + 3, velYAsteroides + 3, cantAsteroides + 10);
             ss.resize(1200, 800);
             game.setScreen(ss);
             dispose();
-        }
+        }*/
 
         batch.end();
         shapeRenderer.end();
@@ -183,6 +195,10 @@ public class PantallaJuego implements Screen {
 
     public boolean agregarBala(Bullet bb) {
         return balas.add(bb);
+    }
+
+    public boolean agregarProyectil(Proyectil pp){
+        return proyectiles.add(pp);
     }
 
     @Override

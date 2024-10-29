@@ -123,9 +123,9 @@ public class Nave4 {
         if(tiempoDisparo > 0) tiempoDisparo--;
     }
 
-    public boolean checkCollision(Ball2 b) {
+    public boolean checkCollision(Proyectil p) {
         // Solo aplica daño si no está en estado de vulnerabilidad
-        if (tiempoVulnerable <= 0 && b.getArea().overlaps(this.getHitbox()) || (vidas == 1 && b.getArea().overlaps(this.getHitbox()))){
+        if (tiempoVulnerable <= 0 && p.getArea().overlaps(this.getHitbox()) || (vidas == 1 && p.getArea().overlaps(this.getHitbox()))){
             if(vidas == 1){
                 vidas = 0;
                 destruida = true;
