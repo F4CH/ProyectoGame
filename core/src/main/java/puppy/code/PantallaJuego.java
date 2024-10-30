@@ -69,9 +69,9 @@ public class PantallaJuego implements Screen {
             Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
         nave.setVidas(vidas);
 
-        enemigoBasico1 = new EnemigoBasico1(Gdx.graphics.getWidth()/2-50, 700, new Texture(Gdx.files.internal("fairy_red.png")));
-        EnemigoBasico1 enemigoBasico2 = new EnemigoBasico1(Gdx.graphics.getWidth()/2-150, 700, new Texture(Gdx.files.internal("fairy_blue.png")));
-        enemigos.add(enemigoBasico1);
+        //enemigoBasico1 = new EnemigoBasico1(Gdx.graphics.getWidth()/2-50, 700, new Texture(Gdx.files.internal("fairy_red.png")), new Texture(Gdx.files.internal("thickrice.png")));
+        EnemigoBasico2 enemigoBasico2 = new EnemigoBasico2(Gdx.graphics.getWidth()/2-150, 700, new Texture(Gdx.files.internal("fairy_blue.png")), new Texture(Gdx.files.internal("wave.png")));
+        //enemigos.add(enemigoBasico1);
         enemigos.add(enemigoBasico2);
     }
 
@@ -135,7 +135,7 @@ public class PantallaJuego implements Screen {
 
         // Actualizar proyectiles enemigos
         for(int i = 0; i < proyectiles.size(); i++){
-            AtaqueEnemigo1 p = (AtaqueEnemigo1) proyectiles.get(i);
+            Proyectil p =  proyectiles.get(i);
             p.update();
             p.draw(batch);
         }

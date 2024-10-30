@@ -21,13 +21,13 @@ public abstract class Enemigo {
     protected float timeSinceLastDirectionChange;
     protected float intervaloCambioDireccion;
 
-    public Enemigo(int x, int y, Texture tx){
+    public Enemigo(int x, int y, Texture tx, Texture txAtaque){
         this.destruida = false;
         this.tiempoDisparo = 0;
         this.intervaloDisparo = 0;
         this.timeSinceLastDirectionChange = 0;
 
-        this.txProyectil = new Texture(Gdx.files.internal("thickrice.png"));
+        this.txProyectil = txAtaque;
 
         spr = new Sprite(tx);
         spr.setPosition(x, y);
@@ -42,9 +42,27 @@ public abstract class Enemigo {
 
     public abstract void manejarMovimiento(float delta);
 
-    public abstract void manejarRebote();
-
     public abstract void manejarDisparo(PantallaJuego juego);
+
+    public void manejarRebote(){
+        // Calcula las nuevas posiciones basadas en la velocidad actual
+        float nuevoX = spr.getX() + xVel;
+        float nuevoY = spr.getY() + yVel;
+
+        // Limita la posición a la mitad superior de la pantalla
+        float alturaLimiteSuperior = Gdx.graphics.getHeight() * 0.75f;
+
+        // Asegura que el enemigo se mantenga dentro de los límites de la pantalla en el eje X
+        if (nuevoX < 0) nuevoX = 0;
+        if (nuevoX > Gdx.graphics.getWidth() - spr.getWidth()) nuevoX = Gdx.graphics.getWidth() - spr.getWidth();
+
+        // Asegura que el enemigo se mantenga dentro de los límites de la mitad superior en el eje Y
+        if (nuevoY < alturaLimiteSuperior) nuevoY = alturaLimiteSuperior;
+        if (nuevoY > Gdx.graphics.getHeight() - spr.getHeight()) nuevoY = Gdx.graphics.getHeight() - spr.getHeight();
+
+        // Actualiza la posición del sprite
+        spr.setPosition(nuevoX, nuevoY);
+    }
 
     public abstract boolean checkCollision(Bullet b);
 

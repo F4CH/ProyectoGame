@@ -4,8 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 
-public class EnemigoBasico1 extends Enemigo{
-    public EnemigoBasico1(int x, int y, Texture tx, Texture txProyectil){
+public class EnemigoBasico2 extends Enemigo{
+    public EnemigoBasico2(int x, int y, Texture tx, Texture txProyectil){
         super(x, y, tx, txProyectil);
         this.vida = 10;
         this.hitbox_default = 30;
@@ -35,36 +35,26 @@ public class EnemigoBasico1 extends Enemigo{
 
     @Override
     public void manejarDisparo(PantallaJuego juego){
-        // Si es tiempo de disparar
         if (tiempoDisparo <= 0) {
-            int numProyectiles = 8; // Número de proyectiles a disparar en un círculo
-            int velocidadProyectil = 4; // Velocidad del proyectil
+            int numProyectiles = 8; // Número de proyectiles
+            int velocidadProyectil = 6; // Velocidad del proyectil
+            float deltaAngle = 0.5f; // Cambia según la velocidad del giro en espiral
 
-            // Genera los proyectiles en un patrón circular
             for (int i = 0; i < numProyectiles; i++) {
-                float angulo = i * (360.0f / numProyectiles); // Ángulo espaciado uniformemente
-                Proyectil ataque = new AtaqueEnemigo1(
-                    spr.getX() + spr.getWidth() / 2, // Posición x inicial del proyectil
-                    spr.getY() + spr.getHeight() / 2, // Posición y inicial del proyectil
+                float angulo = i * (360.0f / numProyectiles);
+                Proyectil proyectil = new AtaqueEnemigo2(
+                    spr.getX() + spr.getWidth() / 2, // Posición x
+                    spr.getY() + spr.getHeight() / 2, // Posición y
                     velocidadProyectil,
-                    angulo, // Ángulo de disparo
-                    txProyectil // Textura del proyectil
+                    angulo,
+                    deltaAngle, // Incremento de ángulo para el espiral
+                    txProyectil
                 );
-
-                // Añade el proyectil a la pantalla de juego
-                juego.agregarProyectil(ataque);
+                juego.agregarProyectil(proyectil);
             }
-
-            // Reproduce el sonido de disparo (si es necesario)
-            // A PROGRAMAR soundDisparo.play();
-
-            // Reinicia el tiempo para el próximo disparo
             tiempoDisparo = intervaloDisparo;
         }
-
-        // Disminuye el tiempo para el próximo disparo
-        //tiempoDisparo -= Gdx.graphics.getDeltaTime();
-        if(tiempoDisparo > 0) tiempoDisparo--;
+        if (tiempoDisparo > 0) tiempoDisparo--;
     }
 
     @Override
