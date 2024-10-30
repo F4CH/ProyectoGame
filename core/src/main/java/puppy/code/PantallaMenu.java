@@ -11,7 +11,7 @@ public class PantallaMenu implements Screen {
 
 	private SpaceNavigation game;
 	private OrthographicCamera camera;
-    private String[] opciones = {"Iniciar Juego", "Salir"};
+    private String[] opciones = {"Iniciar Juego","Instrucciones","Salir"};
     private int opcionSeleccionada = 0;
 
 	public PantallaMenu(SpaceNavigation game) {
@@ -47,7 +47,10 @@ public class PantallaMenu implements Screen {
         if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
             if(opcionSeleccionada == 0){
                 game.setScreen(new PantallaJuego(game, 1, 3, 0));
-            }else{
+            }else if (opcionSeleccionada == 1) {
+                game.setScreen(new PantallaInstrucciones(game));
+                dispose();
+            }else if(opcionSeleccionada == 2){
                 Gdx.app.exit();
             }
         }
