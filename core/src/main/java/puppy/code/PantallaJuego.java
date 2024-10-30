@@ -29,7 +29,9 @@ public class PantallaJuego implements Screen {
     private Music gameMusic;
     private int score;
     private int ronda;
-    private ShapeRenderer shapeRenderer;
+    private boolean juegoPausado;
+    private float posXNave;
+    private float posYNave;
 
 
     private EnemigoBasico1 enemigoBasico1;
@@ -48,11 +50,11 @@ public class PantallaJuego implements Screen {
         this.game = game;
         this.ronda = ronda;
         this.score = score;
+        this.juegoPausado = false;
 
         batch = game.getBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 640);
-        shapeRenderer = new ShapeRenderer();
         // Inicializar assets; música de fondo y efectos de sonido
         explosionSound = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
         explosionSound.setVolume(1,0.5f);
@@ -69,9 +71,9 @@ public class PantallaJuego implements Screen {
             Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
         nave.setVidas(vidas);
 
-        enemigoBasico1 = new EnemigoBasico1(Gdx.graphics.getWidth()/2-50, 700, new Texture(Gdx.files.internal("fairy_red.png")));
-        EnemigoBasico1 enemigoBasico2 = new EnemigoBasico1(Gdx.graphics.getWidth()/2-150, 700, new Texture(Gdx.files.internal("fairy_blue.png")));
-        enemigos.add(enemigoBasico1);
+        //enemigoBasico1 = new EnemigoBasico1(Gdx.graphics.getWidth()/2-50, 700, new Texture(Gdx.files.internal("fairy_red.png")), new Texture(Gdx.files.internal("thickrice.png")));
+        EnemigoBasico2 enemigoBasico2 = new EnemigoBasico2(Gdx.graphics.getWidth()/2-150, 700, new Texture(Gdx.files.internal("fairy_blue.png")), new Texture(Gdx.files.internal("wave.png")));
+        //enemigos.add(enemigoBasico1);
         enemigos.add(enemigoBasico2);
     }
 
@@ -88,9 +90,12 @@ public class PantallaJuego implements Screen {
     @Override
     public void render(float delta) {
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
+        if(juegoPausado) return;
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
             game.setScreen(new PantallaPausa(game, this));
             gameMusic.pause();
+            juegoPausado = true;
             return;
         }
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -99,12 +104,6 @@ public class PantallaJuego implements Screen {
 
         nave.draw(batch, this);
 
-        shapeRenderer.setProjectionMatrix(camera.combined);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.RED);
-
-        Rectangle hitboxNave = nave.getHitbox();
-        shapeRenderer.rect(hitboxNave.x, hitboxNave.y, hitboxNave.width, hitboxNave.height);
 
         for(Enemigo e : enemigos){
             e.draw(batch, this, delta);
@@ -148,7 +147,7 @@ public class PantallaJuego implements Screen {
 
         // Actualizar proyectiles enemigos
         for(int i = 0; i < proyectiles.size(); i++){
-            AtaqueEnemigo1 p = (AtaqueEnemigo1) proyectiles.get(i);
+            Proyectil p =  proyectiles.get(i);
             p.update();
             p.draw(batch);
         }
@@ -186,7 +185,6 @@ public class PantallaJuego implements Screen {
         }
 
         batch.end();
-        shapeRenderer.end();
     }
 
     public boolean agregarBala(Bullet bb) {
@@ -199,6 +197,7 @@ public class PantallaJuego implements Screen {
 
 
     public void reanudarMusica() {
+        juegoPausado = false;
         gameMusic.play();
     }
     @Override
@@ -210,11 +209,26 @@ public class PantallaJuego implements Screen {
     public void resize(int width, int height) {}
 
     @Override
-    public void pause() {}
-
+    public void pause() {
+        juegoPausado = true;
+        if(nave != null){
+            posXNave = nave.getX();
+            posYNave = nave.getY();
+            nave.detenerMovimiento();
+        }
+        gameMusic.pause();
+        game.setScreen(new PantallaPausa(game, this));
+    }
     @Override
-    public void resume() {}
-
+    public void resume() {
+        juegoPausado = false;
+        if(nave != null){
+            nave.setPosition(posXNave, posYNave);
+            nave.detenerMovimiento();
+        }
+        gameMusic.play();
+        game.setScreen(new PantallaJuego(game, ronda, nave.getVidas(), score));
+    }
     @Override
     public void hide() {}
 
@@ -223,6 +237,4 @@ public class PantallaJuego implements Screen {
         this.explosionSound.dispose();
         this.gameMusic.dispose();
     }
-
-
 }

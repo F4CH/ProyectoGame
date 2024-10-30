@@ -181,6 +181,16 @@ public class Nave4 {
     public int getY() {return (int) spr.getY();}
 	public void setVidas(int vidas2) {vidas = vidas2;}
 
+    public void detenerMovimiento(){
+        this.xVel = 0;
+        this.yVel = 0;
+    }
+
+    public void setPosition(float x , float y){
+        spr.setPosition(x, y);
+        detenerMovimiento();
+    }
+
     public Rectangle getHitbox() {
         // Obtener el centro del Sprite
         float centerX = spr.getX() + spr.getWidth() / 2;
