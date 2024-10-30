@@ -6,21 +6,16 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
-public class Bullet extends Proyectil{
-
-    // Constructor
-    public Bullet(float x, float y, int ySpeed, Texture tx) {
-        super(x, y, ySpeed, tx);
+public class AtaqueEnemigo1 extends Proyectil{
+    // Constructor que toma un ángulo de dirección
+    public AtaqueEnemigo1(float x, float y, int speed, float angle, Texture tx) {
+        super(x, y, speed, angle, tx);
     }
 
-    // Actualiza la posición de la bala y verifica si está fuera de los límites
+    // Actualiza la posición del proyectil y verifica los límites
     @Override
     public void update() {
         spr.setPosition(spr.getX() + xSpeed, spr.getY() + ySpeed);
         checkBounds();
-    }
-
-    public void setDestroyed(){
-        this.destroyed = true;
     }
 }

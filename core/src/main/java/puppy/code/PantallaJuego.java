@@ -1,8 +1,6 @@
 package puppy.code;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -16,7 +14,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import puppy.code.PowerUps.BalasExtra;
-import puppy.code.PowerUps.PowerUp;
 import puppy.code.PowerUps.VidasExtra;
 import com.badlogic.gdx.Input;
 
@@ -138,7 +135,7 @@ public class PantallaJuego implements Screen {
 
         // Actualizar proyectiles enemigos
         for(int i = 0; i < proyectiles.size(); i++){
-            Proyectil p = proyectiles.get(i);
+            AtaqueEnemigo1 p = (AtaqueEnemigo1) proyectiles.get(i);
             p.update();
             p.draw(batch);
         }

@@ -99,11 +99,11 @@ public class Nave4 {
 
         if(!herido && Gdx.input.isKeyPressed(Input.Keys.Z) && getPowerUpDisparo()){
             if(tiempoDisparo <= 0) {
-                Bullet balaIzq = new Bullet(spr.getX() + spr.getWidth() / 2 - 25, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
+                Bullet balaIzq = new Bullet(spr.getX() + spr.getWidth() / 2 - 25, spr.getY() + spr.getHeight() - 5,3, txBala);
                 juego.agregarBala(balaIzq);
-                Bullet balaDer = new Bullet(spr.getX() + spr.getWidth() / 2 + 15, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
+                Bullet balaDer = new Bullet(spr.getX() + spr.getWidth() / 2 + 15, spr.getY() + spr.getHeight() - 5,3, txBala);
                 juego.agregarBala(balaDer);
-                Bullet balaCen = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
+                Bullet balaCen = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 3, txBala);
                 juego.agregarBala(balaCen);
                 tiempoDisparo = intervaloDisparo;
                 soundBala.play();
@@ -114,7 +114,7 @@ public class Nave4 {
 
         if(!herido && Gdx.input.isKeyPressed(Input.Keys.Z)){
             if(tiempoDisparo <= 0) {
-                Bullet bala = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
+                Bullet bala = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5,3, txBala);
                 juego.agregarBala(bala);
                 soundBala.play();
                 tiempoDisparo = intervaloDisparo;
