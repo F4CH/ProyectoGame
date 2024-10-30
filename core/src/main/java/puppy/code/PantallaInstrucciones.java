@@ -28,7 +28,7 @@ public class PantallaInstrucciones implements Screen{
         game.getFont().draw(game.getBatch(), "Controles y Power UPS", 100, 650);
         game.getFont().draw(game.getBatch(), "Mover la nave: Flechas de Direccion", 120, 600 );
         game.getFont().draw(game.getBatch(), "Disparar : Tecla Z", 120, 550);
-        game.getFont().draw(game.getBatch(), "Pausar: Tecla P", 120 , 500);
+        game.getFont().draw(game.getBatch(), "Pausar: Tecla ESC", 120 , 500);
         game.getFont().draw(game.getBatch(), "Disparo Extra : 50 puntos", 120 , 450);
         game.getFont().draw(game.getBatch(), "Disparo Diagonal : 100 puntos", 120 , 400);
         game.getFont().draw(game.getBatch(), "Vida Extra : 300 Puntos", 120, 350);
