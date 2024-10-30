@@ -21,16 +21,13 @@ public abstract class Enemigo {
     protected float timeSinceLastDirectionChange;
     protected float intervaloCambioDireccion;
 
-    public Enemigo(int x, int y, Texture tx, Texture txAtaque){
+    public Enemigo(Texture txAtaque){
         this.destruida = false;
         this.tiempoDisparo = 0;
         this.intervaloDisparo = 0;
         this.timeSinceLastDirectionChange = 0;
 
         this.txProyectil = txAtaque;
-
-        spr = new Sprite(tx);
-        spr.setPosition(x, y);
     }
 
     public void draw(SpriteBatch batch, PantallaJuego juego, float delta){

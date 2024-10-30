@@ -2,17 +2,20 @@ package puppy.code;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 
 public class EnemigoBasico2 extends Enemigo{
-    public EnemigoBasico2(int x, int y, Texture tx, Texture txProyectil){
-        super(x, y, tx, txProyectil);
+    public EnemigoBasico2(int x, int y){
+        super(new Texture(Gdx.files.internal("wave.png")));
         this.vida = 10;
         this.hitbox_default = 30;
         this.speed_default = 2;
         this.intervaloCambioDireccion = 1.5f;
         this.intervaloDisparo = 20;
 
+        spr = new Sprite(new Texture(Gdx.files.internal("fairy_blue.png")));
+        spr.setPosition(x, y);
         spr.setBounds(x, y, 80, 80);
         this.hitboxReduction = hitbox_default;
     }
