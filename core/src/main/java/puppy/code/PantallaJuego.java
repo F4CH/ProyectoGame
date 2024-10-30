@@ -18,6 +18,8 @@ import com.badlogic.gdx.math.Rectangle;
 import puppy.code.PowerUps.BalasExtra;
 import puppy.code.PowerUps.PowerUp;
 import puppy.code.PowerUps.VidasExtra;
+import com.badlogic.gdx.Input;
+
 
 public class PantallaJuego implements Screen {
 
@@ -86,6 +88,12 @@ public class PantallaJuego implements Screen {
 
     @Override
     public void render(float delta) {
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.P)){
+            game.setScreen(new PantallaPausa(game, this));
+            gameMusic.pause();
+            return;
+        }
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         dibujaEncabezado();
@@ -180,6 +188,10 @@ public class PantallaJuego implements Screen {
         return proyectiles.add(pp);
     }
 
+
+    public void reanudarMusica() {
+        gameMusic.play();
+    }
     @Override
     public void show() {
         gameMusic.play();
@@ -202,4 +214,6 @@ public class PantallaJuego implements Screen {
         this.explosionSound.dispose();
         this.gameMusic.dispose();
     }
+
+
 }
