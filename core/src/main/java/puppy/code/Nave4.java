@@ -106,47 +106,64 @@ public class Nave4 {
     }
 
     private void manejarDisparo(PantallaJuego juego) {
+        if (tiempoDisparo <= 0 && !herido && Gdx.input.isKeyPressed(Input.Keys.Z)) {
 
-        if(!herido && Gdx.input.isKeyPressed(Input.Keys.Z) && getEstadoBalasExtra()){
-            if(tiempoDisparo <= 0) {
-                Bullet balaIzq = new Bullet(spr.getX() + spr.getWidth() / 2 - 25, spr.getY() + spr.getHeight() - 5,0, 3,txBala);
-                juego.agregarBala(balaIzq);
-                Bullet balaDer = new Bullet(spr.getX() + spr.getWidth() / 2 + 15, spr.getY() + spr.getHeight() - 5,0, 3,txBala);
-                juego.agregarBala(balaDer);
-                Bullet balaCen = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 0, 3,txBala);
-                juego.agregarBala(balaCen);
-                tiempoDisparo = intervaloDisparo;
-                soundBala.play();
+            if (getEstadoBalasExtra() && getEstadoBalasDiagonales()) {
+                // Disparo de balas extra y diagonales
+                Bullet balaIzqDiag = new Bullet(spr.getX() + spr.getWidth() / 2 - 25, spr.getY() + spr.getHeight() - 5, -5, 3, txBala);
+                juego.agregarBala(balaIzqDiag);
+                Bullet balaDerDiag = new Bullet(spr.getX() + spr.getWidth() / 2 + 15, spr.getY() + spr.getHeight() - 5, 5, 3, txBala);
+                juego.agregarBala(balaDerDiag);
+                Bullet balaCenDiag = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
+                juego.agregarBala(balaCenDiag);
+                Bullet balaIzqExtra = new Bullet(spr.getX() + spr.getWidth() / 2 - 25, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
+                juego.agregarBala(balaIzqExtra);
+                Bullet balaDerExtra = new Bullet(spr.getX() + spr.getWidth() / 2 + 15, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
+                juego.agregarBala(balaDerExtra);
+                Bullet balaCenExtra = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
+                juego.agregarBala(balaCenExtra);
                 setCantidadDisparosExtra(getCantidadDisparosExtra() - 1);
-                if(disparosPowerUp == 0) setEstadoBalasExtra(false);
-            }
-        }
-
-        if(!herido && Gdx.input.isKeyPressed(Input.Keys.Z) && getEstadoBalasDiagonales()){
-            if(tiempoDisparo <= 0) {
-                Bullet balaIzq = new Bullet(spr.getX() + spr.getWidth() / 2 - 25, spr.getY() + spr.getHeight() - 5,-5, 3,txBala);
-                juego.agregarBala(balaIzq);
-                Bullet balaDer = new Bullet(spr.getX() + spr.getWidth() / 2 + 15, spr.getY() + spr.getHeight() - 5,0, 3,txBala);
-                juego.agregarBala(balaDer);
-                Bullet balaCen = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 5, 3,txBala);
-                juego.agregarBala(balaCen);
-                tiempoDisparo = intervaloDisparo;
-                soundBala.play();
                 setCantidadBalasDiagonales(getCantidadBalasDiagonales() - 1);
-                if(disparosPowerUp == 0) setEstadoBalasDiagonales(false);
+                if (getCantidadDisparosExtra() == 0) setEstadoBalasExtra(false);
+                if (getCantidadBalasDiagonales() == 0) setEstadoBalasDiagonales(false);
+
+            } else if (getEstadoBalasExtra()) {
+                // Disparo de balas extra
+                Bullet balaIzq = new Bullet(spr.getX() + spr.getWidth() / 2 - 25, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
+                juego.agregarBala(balaIzq);
+                Bullet balaDer = new Bullet(spr.getX() + spr.getWidth() / 2 + 15, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
+                juego.agregarBala(balaDer);
+                Bullet balaCen = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
+                juego.agregarBala(balaCen);
+                setCantidadDisparosExtra(getCantidadDisparosExtra() - 1);
+                if (getCantidadDisparosExtra() == 0) setEstadoBalasExtra(false);
+
+            } else if (getEstadoBalasDiagonales()) {
+                // Disparo de balas diagonales
+                Bullet balaIzq = new Bullet(spr.getX() + spr.getWidth() / 2 - 25, spr.getY() + spr.getHeight() - 5, -5, 3, txBala);
+                juego.agregarBala(balaIzq);
+                Bullet balaDer = new Bullet(spr.getX() + spr.getWidth() / 2 + 15, spr.getY() + spr.getHeight() - 5, 5, 3, txBala);
+                juego.agregarBala(balaDer);
+                Bullet balaCen = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
+                juego.agregarBala(balaCen);
+                setCantidadBalasDiagonales(getCantidadBalasDiagonales() - 1);
+                if (getCantidadBalasDiagonales() == 0) setEstadoBalasDiagonales(false);
+
+            } else {
+                // Disparo normal
+                Bullet bala = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
+                juego.agregarBala(bala);
             }
+
+            // Establece el tiempo de espera para el siguiente disparo
+            tiempoDisparo = intervaloDisparo;
+            soundBala.play();
         }
 
-        if(!herido && Gdx.input.isKeyPressed(Input.Keys.Z)){
-            if(tiempoDisparo <= 0) {
-                Bullet bala = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5,0, 3,txBala);
-                juego.agregarBala(bala);
-                soundBala.play();
-                tiempoDisparo = intervaloDisparo;
-            }
-        }
-        if(tiempoDisparo > 0) tiempoDisparo--;
+        // Decremento del tiempo de espera entre disparos
+        if (tiempoDisparo > 0) tiempoDisparo--;
     }
+
 
     public boolean checkCollision(Proyectil p) {
         // Solo aplica daño si no está en estado de vulnerabilidad
