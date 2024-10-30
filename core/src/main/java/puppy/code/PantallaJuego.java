@@ -73,8 +73,10 @@ public class PantallaJuego implements Screen {
 
         enemigoBasico1 = new EnemigoBasico1(Gdx.graphics.getWidth()/2-50, 700);
         EnemigoBasico2 enemigoBasico2 = new EnemigoBasico2(Gdx.graphics.getWidth()/2-150, 700);
+        EnemigoBasico3 enemigoBasico3 = new EnemigoBasico3(Gdx.graphics.getWidth()/2-20, 700);
         enemigos.add(enemigoBasico1);
         enemigos.add(enemigoBasico2);
+        enemigos.add(enemigoBasico3);
     }
 
     public Nave4 getNave(){return nave;}
@@ -150,6 +152,11 @@ public class PantallaJuego implements Screen {
             Proyectil p =  proyectiles.get(i);
             p.update();
             p.draw(batch);
+
+            if(p.isDestroyed()){
+                proyectiles.remove(i);
+                i--;
+            }
         }
 
         // Dibujar nave y verificar colisiones solo si no está destruida

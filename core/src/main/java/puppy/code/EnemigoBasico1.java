@@ -66,7 +66,6 @@ public class EnemigoBasico1 extends Enemigo{
         }
 
         // Disminuye el tiempo para el próximo disparo
-        //tiempoDisparo -= Gdx.graphics.getDeltaTime();
         if(tiempoDisparo > 0) tiempoDisparo--;
     }
 
