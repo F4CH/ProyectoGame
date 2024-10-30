@@ -32,6 +32,8 @@ public class Nave4 {
     private float hitboxReduction;
     private boolean estadoBalasExtra = false;
     private int disparosPowerUp = 0;
+    private boolean estadoBalasDiagonales = false;
+    private int disparosDiagonales = 0;
 
     public Nave4(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
         this.vidas = 3;
@@ -59,13 +61,21 @@ public class Nave4 {
         manejarDisparo(juego);
     }
 
-    public void setPowerUpDisparo(boolean estado){this.estadoBalasExtra = estado;}
+    public void setEstadoBalasExtra(boolean estado){this.estadoBalasExtra = estado;}
 
-    public boolean getPowerUpDisparo(){return this.estadoBalasExtra;}
+    public boolean getEstadoBalasExtra(){return this.estadoBalasExtra;}
 
-    public void setDisparosPowerUp(int powerUp){this.disparosPowerUp = powerUp;}
+    public void setCantidadDisparosExtra(int powerUp){this.disparosPowerUp = powerUp;}
 
-    public int getDisparosPowerUp(){return this.disparosPowerUp;}
+    public int getCantidadDisparosExtra(){return this.disparosPowerUp;}
+
+    public void setEstadoBalasDiagonales(boolean estado){this.estadoBalasDiagonales = estado;}
+
+    public boolean getEstadoBalasDiagonales(){return this.estadoBalasDiagonales;}
+
+    public void setCantidadBalasDiagonales(int powerUp){this.disparosDiagonales = powerUp;}
+
+    public int getCantidadBalasDiagonales(){return this.disparosDiagonales;}
 
     public void manejarVulnerabilidad() {
         if (tiempoVulnerable > 0) {
@@ -97,24 +107,39 @@ public class Nave4 {
 
     private void manejarDisparo(PantallaJuego juego) {
 
-        if(!herido && Gdx.input.isKeyPressed(Input.Keys.Z) && getPowerUpDisparo()){
+        if(!herido && Gdx.input.isKeyPressed(Input.Keys.Z) && getEstadoBalasExtra()){
             if(tiempoDisparo <= 0) {
-                Bullet balaIzq = new Bullet(spr.getX() + spr.getWidth() / 2 - 25, spr.getY() + spr.getHeight() - 5,3, txBala);
+                Bullet balaIzq = new Bullet(spr.getX() + spr.getWidth() / 2 - 25, spr.getY() + spr.getHeight() - 5,0, 3,txBala);
                 juego.agregarBala(balaIzq);
-                Bullet balaDer = new Bullet(spr.getX() + spr.getWidth() / 2 + 15, spr.getY() + spr.getHeight() - 5,3, txBala);
+                Bullet balaDer = new Bullet(spr.getX() + spr.getWidth() / 2 + 15, spr.getY() + spr.getHeight() - 5,0, 3,txBala);
                 juego.agregarBala(balaDer);
-                Bullet balaCen = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 3, txBala);
+                Bullet balaCen = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 0, 3,txBala);
                 juego.agregarBala(balaCen);
                 tiempoDisparo = intervaloDisparo;
                 soundBala.play();
-                setDisparosPowerUp(getDisparosPowerUp() - 1);
-                if(disparosPowerUp == 0) setPowerUpDisparo(false);
+                setCantidadDisparosExtra(getCantidadDisparosExtra() - 1);
+                if(disparosPowerUp == 0) setEstadoBalasExtra(false);
+            }
+        }
+
+        if(!herido && Gdx.input.isKeyPressed(Input.Keys.Z) && getEstadoBalasDiagonales()){
+            if(tiempoDisparo <= 0) {
+                Bullet balaIzq = new Bullet(spr.getX() + spr.getWidth() / 2 - 25, spr.getY() + spr.getHeight() - 5,-5, 3,txBala);
+                juego.agregarBala(balaIzq);
+                Bullet balaDer = new Bullet(spr.getX() + spr.getWidth() / 2 + 15, spr.getY() + spr.getHeight() - 5,0, 3,txBala);
+                juego.agregarBala(balaDer);
+                Bullet balaCen = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 5, 3,txBala);
+                juego.agregarBala(balaCen);
+                tiempoDisparo = intervaloDisparo;
+                soundBala.play();
+                setCantidadBalasDiagonales(getCantidadBalasDiagonales() - 1);
+                if(disparosPowerUp == 0) setEstadoBalasDiagonales(false);
             }
         }
 
         if(!herido && Gdx.input.isKeyPressed(Input.Keys.Z)){
             if(tiempoDisparo <= 0) {
-                Bullet bala = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5,3, txBala);
+                Bullet bala = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5,0, 3,txBala);
                 juego.agregarBala(bala);
                 soundBala.play();
                 tiempoDisparo = intervaloDisparo;

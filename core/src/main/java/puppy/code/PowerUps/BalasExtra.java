@@ -5,7 +5,7 @@ import puppy.code.PantallaJuego;
 public class BalasExtra implements PowerUp {
     @Override
     public void aplicarPowerUp(PantallaJuego pantalla){
-        pantalla.getNave().setDisparosPowerUp(40);
-        pantalla.getNave().setPowerUpDisparo(true);
+        pantalla.getNave().setCantidadDisparosExtra(60);
+        pantalla.getNave().setEstadoBalasExtra(true);
     }
 }

@@ -13,7 +13,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import puppy.code.PowerUps.BalasDiagonales;
 import puppy.code.PowerUps.BalasExtra;
+import puppy.code.PowerUps.PowerUp;
 import puppy.code.PowerUps.VidasExtra;
 import com.badlogic.gdx.Input;
 
@@ -37,9 +39,9 @@ public class PantallaJuego implements Screen {
     private Nave4 nave;
 
     private ArrayList<Bullet> balas = new ArrayList<>();
-    private BalasExtra auxBalasExtra = new BalasExtra();
-    private VidasExtra auxVidasExtra = new VidasExtra();
-
+    /*private BalasExtra auxBalasExtra = new BalasExtra();
+    private VidasExtra auxVidasExtra = new VidasExtra();*/
+    PowerUp powerup;
     public int getScore() {return score;}
 
     public PantallaJuego(SpaceNavigation game, int ronda, int vidas, int score) {
@@ -122,8 +124,18 @@ public class PantallaJuego implements Screen {
                         enemigos.remove(j);
                         j--;
                         score += 300;
-                        if(getScore() % 50 == 0) auxBalasExtra.aplicarPowerUp(this);
-                        if(getScore() % 300 == 0) auxVidasExtra.aplicarPowerUp(this);
+                        if(getScore() % 50 == 0){
+                            powerup = new BalasExtra();
+                            powerup.aplicarPowerUp(this);
+                        }
+                        if(getScore() % 100 == 0){
+                            powerup = new BalasDiagonales();
+                            powerup.aplicarPowerUp(this);
+                        }
+                        if(getScore() % 300 == 0) {
+                            powerup = new VidasExtra();
+                            powerup.aplicarPowerUp(this);
+                        }
                         break;
                     }
                 }

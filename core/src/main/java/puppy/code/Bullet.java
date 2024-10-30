@@ -9,8 +9,9 @@ import com.badlogic.gdx.math.Rectangle;
 public class Bullet extends Proyectil{
 
     // Constructor
-    public Bullet(float x, float y, int ySpeed, Texture tx) {
+    public Bullet(float x, float y, int xSpeed, int ySpeed, Texture tx) {
         super(x, y, ySpeed, tx);
+        this.xSpeed = xSpeed;
     }
 
     // Actualiza la posición de la bala y verifica si está fuera de los límites
