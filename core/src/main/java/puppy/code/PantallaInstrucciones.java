@@ -24,13 +24,14 @@ public class PantallaInstrucciones implements Screen{
         game.getBatch().setProjectionMatrix(camera.combined);
 
         game.getBatch().begin();
-        game.getFont().draw(game.getBatch(), "Instrucciones", 100 , 700);
-        game.getFont().draw(game.getBatch(), "Controles y Power UPS", 100, 600);
-        game.getFont().draw(game.getBatch(), "Mover la nave: Flechas de Direccion", 120, 550 );
-        game.getFont().draw(game.getBatch(), "Disparar : Tecla Z", 120, 500);
-        game.getFont().draw(game.getBatch(), "Pausar: Tecla P", 120 , 450);
-        game.getFont().draw(game.getBatch(), "Vida Extra : 300 Puntos", 120, 400);
-        game.getFont().draw(game.getBatch(), "Disparo Triple : 50 puntos", 120 , 350);
+        game.getFont().draw(game.getBatch(), "Instrucciones", 100 , 750);
+        game.getFont().draw(game.getBatch(), "Controles y Power UPS", 100, 650);
+        game.getFont().draw(game.getBatch(), "Mover la nave: Flechas de Direccion", 120, 600 );
+        game.getFont().draw(game.getBatch(), "Disparar : Tecla Z", 120, 550);
+        game.getFont().draw(game.getBatch(), "Pausar: Tecla P", 120 , 500);
+        game.getFont().draw(game.getBatch(), "Disparo Extra : 50 puntos", 120 , 450);
+        game.getFont().draw(game.getBatch(), "Disparo Diagonal : 100 puntos", 120 , 400);
+        game.getFont().draw(game.getBatch(), "Vida Extra : 300 Puntos", 120, 350);
         game.getFont().draw(game.getBatch(), "Objetivo:", 100, 250);
         game.getFont().draw(game.getBatch(), "Eliminar a los enemigos y evitar que te golpeen para obtener la mayor puntuacion", 120, 200);
         game.getFont().draw(game.getBatch(), "Presiona ESC para volver al menu principal.", 120, 100);
