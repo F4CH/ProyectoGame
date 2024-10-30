@@ -2,10 +2,7 @@ package puppy.code;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 
 public class EnemigoBasico1 extends Enemigo{
     public EnemigoBasico1(int x, int y, Texture tx){
@@ -69,7 +66,7 @@ public class EnemigoBasico1 extends Enemigo{
             // Genera los proyectiles en un patrón circular
             for (int i = 0; i < numProyectiles; i++) {
                 float angulo = i * (360.0f / numProyectiles); // Ángulo espaciado uniformemente
-                Proyectil proyectil = new Proyectil(
+                Proyectil ataque = new AtaqueEnemigo1(
                     spr.getX() + spr.getWidth() / 2, // Posición x inicial del proyectil
                     spr.getY() + spr.getHeight() / 2, // Posición y inicial del proyectil
                     velocidadProyectil,
@@ -78,7 +75,7 @@ public class EnemigoBasico1 extends Enemigo{
                 );
 
                 // Añade el proyectil a la pantalla de juego
-                juego.agregarProyectil(proyectil);
+                juego.agregarProyectil(ataque);
             }
 
             // Reproduce el sonido de disparo (si es necesario)

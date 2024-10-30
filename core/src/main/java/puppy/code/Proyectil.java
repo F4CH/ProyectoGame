@@ -6,13 +6,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
-public class Proyectil {
-    private boolean destroyed;
-    private Sprite spr;
-    private float xSpeed;
-    private float ySpeed;
+public abstract class Proyectil {
+    protected boolean destroyed;
+    protected Sprite spr;
+    protected float xSpeed;
+    protected float ySpeed;
 
-    // Constructor que toma un ángulo de dirección
     public Proyectil(float x, float y, int speed, float angle, Texture tx) {
         this.spr = new Sprite(tx);
         this.spr.setPosition(x, y);
@@ -31,11 +30,18 @@ public class Proyectil {
         spr.setY(spr.getY() + ySpeed);
     }
 
-    // Actualiza la posición del proyectil y verifica los límites
-    public void update() {
-        spr.setPosition(spr.getX() + xSpeed, spr.getY() + ySpeed);
-        checkBounds();
+    public Proyectil(float x, float y, int ySpeed, Texture tx){
+        this.spr = new Sprite(tx);
+        this.spr.setPosition(x, y);
+        this.destroyed = false;
+
+        this.xSpeed = 0;
+        this.ySpeed = ySpeed + 3;
+
     }
+
+    // Actualiza la posición del proyectil y verifica los límites
+    public abstract void update();
 
     // Dibuja el proyectil en el lote de sprites
     public void draw(SpriteBatch batch) {
@@ -43,9 +49,9 @@ public class Proyectil {
     }
 
     // Verifica si el proyectil está fuera de los límites de la pantalla
-    private void checkBounds() {
+    protected void checkBounds() {
         if (spr.getX() < 0 || spr.getX() + spr.getWidth() > Gdx.graphics.getWidth() ||
-            spr.getY() < 0 || spr.getY() + spr.getHeight() > Gdx.graphics.getHeight()) {
+                spr.getY() < 0 || spr.getY() + spr.getHeight() > Gdx.graphics.getHeight()) {
             destroyed = true;
         }
     }
