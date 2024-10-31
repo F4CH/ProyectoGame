@@ -1,30 +1,28 @@
 package puppy.code.Pantallas;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import puppy.code.*;
 import puppy.code.Enemigos.Enemigo;
-import puppy.code.Enemigos.EnemigoBasico1;
-import puppy.code.Enemigos.EnemigoBasico2;
-import puppy.code.Enemigos.EnemigoBasico3;
 import puppy.code.Fondos.FondoAnimado;
-import puppy.code.PowerUps.PowerUp;
-import puppy.code.PowerUps.BalasExtra;
+import puppy.code.Nave4;
+import puppy.code.Oleadas;
 import puppy.code.PowerUps.BalasDiagonales;
+import puppy.code.PowerUps.BalasExtra;
+import puppy.code.PowerUps.PowerUp;
 import puppy.code.PowerUps.VidasExtra;
-import com.badlogic.gdx.Input;
 import puppy.code.Proyectiles.Bullet;
 import puppy.code.Proyectiles.Proyectil;
+import puppy.code.SpaceNavigation;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PantallaJuego implements Screen {
     private SpaceNavigation game;
