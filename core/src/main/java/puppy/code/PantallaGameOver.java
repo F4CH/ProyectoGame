@@ -12,7 +12,8 @@ public class PantallaGameOver implements Screen {
 	private SpaceNavigation game;
 	private OrthographicCamera camera;
     private String[] opciones = {"Reintentar", "Volver al Menu Principal"};
-    int opcionSeleccionada = 0;
+    private int opcionSeleccionada = 0;
+    private FondoEstatico fondoEstatico;
 
 
 	public PantallaGameOver(SpaceNavigation game) {
@@ -20,6 +21,7 @@ public class PantallaGameOver implements Screen {
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1200, 800);
+        fondoEstatico = new FondoEstatico("FondoGameOver.png");
 	}
 
 	@Override
@@ -30,6 +32,7 @@ public class PantallaGameOver implements Screen {
 		game.getBatch().setProjectionMatrix(camera.combined);
 
 		game.getBatch().begin();
+        fondoEstatico.draw(game.getBatch());
 		game.getFont().draw(game.getBatch(), "Game Over", 140 , 500);
 
         for(int i = 0 ; i < opciones.length ; i++){

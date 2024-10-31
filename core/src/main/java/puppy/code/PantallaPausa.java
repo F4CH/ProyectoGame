@@ -12,12 +12,15 @@ public class PantallaPausa implements Screen {
     private PantallaJuego pantallaJuego;
     private String[] opciones = {"Reanudar" , "Reiniciar Nivel" , "Volver al Menu Principal"};
     private int opcionSeleccionada = 0;
+    private FondoEstatico fondoEstatico;
 
     public PantallaPausa(SpaceNavigation game, PantallaJuego pantallaJuego) {
         this.game = game;
         this.pantallaJuego = pantallaJuego;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1200, 800);
+
+        fondoEstatico = new FondoEstatico("FondoPausa.png");
     }
 
     public void render(float delta) {
@@ -27,6 +30,7 @@ public class PantallaPausa implements Screen {
         game.getBatch().setProjectionMatrix(camera.combined);
 
         game.getBatch().begin();
+        fondoEstatico.draw(game.getBatch());
         game.getFont().draw(game.getBatch(), "Juego en Pausa", 140 , 500);
 
         for(int i = 0 ; i < opciones.length ; i++){

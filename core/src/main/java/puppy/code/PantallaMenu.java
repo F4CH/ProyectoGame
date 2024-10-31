@@ -13,21 +13,26 @@ public class PantallaMenu implements Screen {
 	private OrthographicCamera camera;
     private String[] opciones = {"Iniciar Juego","Instrucciones","Salir"};
     private int opcionSeleccionada = 0;
+    private FondoEstatico fondoEstatico;
 
 	public PantallaMenu(SpaceNavigation game) {
 		this.game = game;
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1200, 800);
+
+        fondoEstatico = new FondoEstatico("FondoMenu.png");
 	}
 
 	@Override
 	public void render(float delta) {
 		ScreenUtils.clear(0, 0, 0.2f, 1);
 
+
 		camera.update();
 		game.getBatch().setProjectionMatrix(camera.combined);
 
 		game.getBatch().begin();
+        fondoEstatico.draw(game.getBatch());
 		game.getFont().draw(game.getBatch(), "Bienvenido a Space Navigation !", 140, 500);
         for(int i = 0; i < opciones.length; i++){
             if(i == opcionSeleccionada){

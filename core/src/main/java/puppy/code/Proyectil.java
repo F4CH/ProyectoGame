@@ -36,7 +36,7 @@ public abstract class Proyectil {
         this.destroyed = false;
 
         this.xSpeed = 0;
-        this.ySpeed = ySpeed + 3;
+        this.ySpeed = ySpeed + 1;
 
     }
 

@@ -29,6 +29,7 @@ public class PantallaJuego implements Screen {
     private boolean juegoPausado;
     private float posXNave;
     private float posYNave;
+    private FondoAnimado fondoAnimado;
 
     private EnemigoBasico1 enemigoBasico1;
     private ArrayList<Enemigo> enemigos = new ArrayList<>();
@@ -46,6 +47,7 @@ public class PantallaJuego implements Screen {
         this.juegoPausado = false;
 
         batch = game.getBatch();
+        fondoAnimado = new FondoAnimado("fondo.gif");
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 640);
         explosionSound = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
@@ -106,7 +108,9 @@ public class PantallaJuego implements Screen {
         }
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        fondoAnimado.update(delta);
         batch.begin();
+        fondoAnimado.draw(batch);
         dibujaEncabezado();
 
         nave.draw(batch, this);

@@ -10,11 +10,14 @@ public class PantallaInstrucciones implements Screen{
 
     private SpaceNavigation game;
     private OrthographicCamera camera;
+    private FondoEstatico fondoEstatico;
 
     public PantallaInstrucciones(SpaceNavigation game) {
         this.game = game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1200, 800);
+
+        fondoEstatico = new FondoEstatico("FondoInstrucciones.png");
     }
 
     public void render(float delta) {
@@ -24,6 +27,7 @@ public class PantallaInstrucciones implements Screen{
         game.getBatch().setProjectionMatrix(camera.combined);
 
         game.getBatch().begin();
+        fondoEstatico.draw(game.getBatch());
         game.getFont().draw(game.getBatch(), "Instrucciones", 100 , 750);
         game.getFont().draw(game.getBatch(), "Controles y Power UPS", 100, 650);
         game.getFont().draw(game.getBatch(), "Mover la nave: Flechas de Direccion", 120, 600 );
