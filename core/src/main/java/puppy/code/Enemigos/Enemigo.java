@@ -27,9 +27,9 @@ public abstract class Enemigo {
     protected float contadorEspera; // Contador para medir el tiempo transcurrido
     protected boolean apareciendo; // Estado de si el enemigo está en proceso de aparecer
 
-    private float alturaInicial; // Altura desde donde aparecerán los enemigos
-    private float velocidadEntrada; // Velocidad a la que el enemigo bajará
-    private boolean enMovimiento; // Estado de si el enemigo está en movimiento de entrada
+    protected float alturaInicial; // Altura desde donde aparecerán los enemigos
+    protected float velocidadEntrada; // Velocidad a la que el enemigo bajará
+    protected boolean enMovimiento; // Estado de si el enemigo está en movimiento de entrada
 
     public Enemigo(Texture txAtaque, float tiempoEspera){
         this.destruida = false;
@@ -103,7 +103,15 @@ public abstract class Enemigo {
         spr.setPosition(nuevoX, nuevoY);
     }
 
-    public abstract boolean checkCollision(Bullet b);
+    public boolean checkCollision(Bullet b){
+        if(enMovimiento) return false;
+        if (b.getArea().overlaps(this.getHitbox())){
+            vida--;
+            if (vida <= 0) destruida = true;
+            return true;
+        }
+        return false;
+    }
 
     public boolean estaDestruida(){
         return destruida;

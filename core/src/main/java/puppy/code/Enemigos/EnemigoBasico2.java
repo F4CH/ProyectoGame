@@ -12,7 +12,7 @@ import puppy.code.Proyectiles.Proyectil;
 public class EnemigoBasico2 extends Enemigo {
     public EnemigoBasico2(int x, int y, float tiempoEspera){
         super(new Texture(Gdx.files.internal("fairy_circle_red.png")), tiempoEspera);
-        this.vida = 10;
+        this.vida = 4;
         this.hitbox_default = 30;
         this.speed_default = 2;
         this.timeSinceLastDirectionChange = 1.5f;
@@ -64,15 +64,5 @@ public class EnemigoBasico2 extends Enemigo {
             tiempoDisparo = intervaloDisparo;
         }
         if (tiempoDisparo > 0) tiempoDisparo--;
-    }
-
-    @Override
-    public boolean checkCollision(Bullet b){
-        if (b.getArea().overlaps(this.getHitbox())){
-            vida--;
-            if (vida <= 0) destruida = true;
-            return true;
-        }
-        return false;
     }
 }

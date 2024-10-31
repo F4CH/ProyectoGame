@@ -28,17 +28,17 @@ public class Oleadas {
 
         // Crea y añade enemigos de tipo básico 1
         for (int i = 0; i < numEnemigosBasico1; i++) {
-            enemigos.add(new EnemigoBasico1(calcularX(), Gdx.graphics.getHeight(), i));
+            enemigos.add(new EnemigoBasico1(calcularX(), Gdx.graphics.getHeight(), i * 2));
         }
 
         // Crea y añade enemigos de tipo básico 2
         for (int i = 0; i < numEnemigosBasico2; i++) {
-            enemigos.add(new EnemigoBasico2(calcularX(), Gdx.graphics.getHeight(), i));
+            enemigos.add(new EnemigoBasico2(calcularX(), Gdx.graphics.getHeight(), i * 2));
         }
 
         // Crea y añade enemigos de tipo básico 3
         for (int i = 0; i < numEnemigosBasico3; i++) {
-            enemigos.add(new EnemigoBasico3(calcularX(), Gdx.graphics.getHeight(), i));
+            enemigos.add(new EnemigoBasico3(calcularX(), Gdx.graphics.getHeight(), i * 2));
         }
 
         return enemigos;
