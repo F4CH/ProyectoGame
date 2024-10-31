@@ -8,6 +8,7 @@ public class Bullet extends Proyectil {
     public Bullet(float x, float y, int xSpeed, int ySpeed, Texture tx) {
         super(x, y, ySpeed, tx);
         this.xSpeed = xSpeed;
+        spr.setBounds(x, y, 20, 30);
     }
 
     // Actualiza la posición de la bala y verifica si está fuera de los límites

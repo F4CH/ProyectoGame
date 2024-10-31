@@ -38,7 +38,7 @@ public class PantallaJuego implements Screen {
     private float posYNave;
     private FondoAnimado fondoAnimado;
 
-    private EnemigoBasico1 enemigoBasico1;
+
     private ArrayList<Enemigo> enemigos = new ArrayList<>();
     private ArrayList<Proyectil> proyectiles = new ArrayList<>();
     private Nave4 nave;
@@ -68,7 +68,7 @@ public class PantallaJuego implements Screen {
             Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
         nave.setVidas(vidas);
 
-        enemigoBasico1 = new EnemigoBasico1(Gdx.graphics.getWidth() / 2 - 50, 700);
+        EnemigoBasico1 enemigoBasico1 = new EnemigoBasico1(Gdx.graphics.getWidth() / 2 - 50, 700);
         EnemigoBasico2 enemigoBasico2 = new EnemigoBasico2(Gdx.graphics.getWidth() / 2 - 150, 700);
         EnemigoBasico3 enemigoBasico3 = new EnemigoBasico3(Gdx.graphics.getWidth() / 2 - 20, 700);
         enemigos.add(enemigoBasico1);
@@ -103,91 +103,14 @@ public class PantallaJuego implements Screen {
 
     @Override
     public void render(float delta) {
-        if (juegoPausado) return;
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            game.setScreen(new PantallaPausa(game, this));
-            gameMusic.pause();
-            juegoPausado = true;
-            return;
-        }
-
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        fondoAnimado.update(delta);
-        batch.begin();
-        fondoAnimado.draw(batch);
-        dibujaEncabezado();
-
-        nave.draw(batch, this);
-
-        for (Enemigo e : enemigos) {
-            e.draw(batch, this, delta);
-        }
-
-        // Actualizar y dibujar balas
-        for (int i = 0; i < balas.size(); i++) {
-            Bullet b = balas.get(i);
-            b.update();
-            b.draw(batch);
-            for (int j = 0; j < enemigos.size(); j++) {
-                Enemigo e = enemigos.get(j);
-                if (e.checkCollision(b)) {
-                    b.setDestroyed();
-                    if (e.estaDestruida()) {
-                        enemigos.remove(j);
-                        j--;
-                        score += 50;
-                        aplicarPowerUpSiCorresponde();
-                        break;
-                    }
-                }
-            }
-            if (b.isDestroyed()) {
-                balas.remove(i);
-                i--;
-            }
-        }
-
-        // Actualizar proyectiles enemigos
-        for (int i = 0; i < proyectiles.size(); i++) {
-            Proyectil p = proyectiles.get(i);
-            p.update();
-            p.draw(batch);
-
-            if (p.isDestroyed()) {
-                proyectiles.remove(i);
-                i--;
-            }
-        }
-
-        nave.draw(batch, this);
-        for (int i = 0; i < proyectiles.size(); i++) {
-            Proyectil p = proyectiles.get(i);
-            p.draw(batch);
-
-            if (!nave.estaHerido() && nave.checkCollision(p)) {
-                proyectiles.remove(i);
-                i--;
-            }
-        }
-
-        if (nave.estaDestruido()) {
-            if (score > game.getHighScore()) {
-                game.setHighScore(score);
-            }
-            Screen ss = new PantallaGameOver(game);
-            ss.resize(1200, 800);
-            game.setScreen(ss);
-            dispose();
-        }
-
-        if (enemigos.isEmpty()) {
-            Screen ss = new PantallaJuego(game, ronda + 1, nave.getVidas(), score);
-            ss.resize(1200, 800);
-            game.setScreen(ss);
-            dispose();
-        }
-
+        comprobarPausa();
+        iniciarComponentes(delta);
+        dibujarEnemigos(delta);
+        actualizarBalas();
+        actualizarProyectiles();
+        verificarAtaquesANave();
+        verificarNaveDestruida();
+        verificarFinRonda();
         batch.end();
     }
 
@@ -244,5 +167,102 @@ public class PantallaJuego implements Screen {
     public void dispose() {
         this.gameMusic.dispose();
         //fondoAnimado.dispose();
+    }
+
+    public void comprobarPausa(){
+        if (juegoPausado) return;
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            game.setScreen(new PantallaPausa(game, this));
+            gameMusic.pause();
+            juegoPausado = true;
+            return;
+        }
+    }
+
+    public void iniciarComponentes(float delta){
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        fondoAnimado.update(delta);
+        batch.begin();
+        fondoAnimado.draw(batch);
+        dibujaEncabezado();
+        nave.draw(batch, this);
+    }
+
+    public void dibujarEnemigos(float delta){
+        for (Enemigo e : enemigos) {
+            e.draw(batch, this, delta);
+        }
+    }
+
+    public void actualizarBalas(){
+        for (int i = 0; i < balas.size(); i++) {
+            Bullet b = balas.get(i);
+            b.update();
+            b.draw(batch);
+            for (int j = 0; j < enemigos.size(); j++) {
+                Enemigo e = enemigos.get(j);
+                if (e.checkCollision(b)) {
+                    b.setDestroyed();
+                    if (e.estaDestruida()) {
+                        enemigos.remove(j);
+                        j--;
+                        score += 50;
+                        aplicarPowerUpSiCorresponde();
+                        break;
+                    }
+                }
+            }
+            if (b.isDestroyed()) {
+                balas.remove(i);
+                i--;
+            }
+        }
+    }
+
+    public void actualizarProyectiles(){
+        for (int i = 0; i < proyectiles.size(); i++) {
+            Proyectil p = proyectiles.get(i);
+            p.update();
+            p.draw(batch);
+
+            if (p.isDestroyed()) {
+                proyectiles.remove(i);
+                i--;
+            }
+        }
+    }
+
+    public void verificarAtaquesANave(){
+        nave.draw(batch, this);
+        for (int i = 0; i < proyectiles.size(); i++) {
+            Proyectil p = proyectiles.get(i);
+            p.draw(batch);
+
+            if (!nave.estaHerido() && nave.checkCollision(p)) {
+                proyectiles.remove(i);
+                i--;
+            }
+        }
+    }
+
+    public void verificarNaveDestruida(){
+        if (nave.estaDestruido()) {
+            if (score > game.getHighScore()) {
+                game.setHighScore(score);
+            }
+            Screen ss = new PantallaGameOver(game);
+            ss.resize(1200, 800);
+            game.setScreen(ss);
+            dispose();
+        }
+    }
+
+    public void verificarFinRonda(){
+        if (enemigos.isEmpty()) {
+            Screen ss = new PantallaJuego(game, ronda + 1, nave.getVidas(), score);
+            ss.resize(1200, 800);
+            game.setScreen(ss);
+            dispose();
+        }
     }
 }
