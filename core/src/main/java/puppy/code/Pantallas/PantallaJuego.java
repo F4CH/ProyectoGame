@@ -85,14 +85,7 @@ public class PantallaJuego implements Screen {
     public Nave4 getNave() {
         return nave;
     }
-
-    private void aplicarPowerUpSiCorresponde() {
-        PowerUp powerUp = powerUpMap.get(score);
-        if (powerUp != null) {
-            powerUp.aplicarPowerUp(this);
-        }
-    }
-
+    
     public void dibujaEncabezado() {
         CharSequence str = "Vidas: " + nave.getVidas() + " Ronda: " + ronda;
         game.getFont().getData().setScale(2f);
@@ -263,6 +256,27 @@ public class PantallaJuego implements Screen {
             ss.resize(1200, 800);
             game.setScreen(ss);
             dispose();
+        }
+    }
+
+    public void aplicarPowerUpSiCorresponde() {
+        if(score % 50 == 0){
+            PowerUp balasExtra = powerUpMap.get(50);
+            if(balasExtra != null){
+                balasExtra.aplicarPowerUp(this);
+            }
+        }
+        if(score % 100 == 0){
+            PowerUp balasDiagonales = powerUpMap.get(100);
+            if(balasDiagonales != null){
+                balasDiagonales.aplicarPowerUp(this);
+            }
+        }
+        if(score % 300 == 0){
+            PowerUp vidasExtra = powerUpMap.get(300);
+            if(vidasExtra != null){
+                vidasExtra.aplicarPowerUp(this);
+            }
         }
     }
 }
