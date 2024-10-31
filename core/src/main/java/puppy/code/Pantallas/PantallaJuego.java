@@ -95,7 +95,7 @@ public class PantallaJuego implements Screen {
         CharSequence str = "Vidas: " + nave.getVidas() + " Ronda: " + ronda;
         game.getFont().getData().setScale(2f);
         game.getFont().draw(batch, str, 10, 30);
-        game.getFont().draw(batch, "Score:" + this.score, Gdx.graphics.getWidth() - 150, 30);
+        game.getFont().draw(batch, "Score:" + this.score, Gdx.graphics.getWidth() - 200, 30);
         game.getFont().draw(batch, "HighScore:" + game.getHighScore(), Gdx.graphics.getWidth() / 2 - 100, 30);
     }
 
