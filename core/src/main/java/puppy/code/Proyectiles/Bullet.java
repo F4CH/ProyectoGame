@@ -6,7 +6,7 @@ public class Bullet extends Proyectil {
 
     // Constructor
     public Bullet(float x, float y, int xSpeed, int ySpeed, Texture tx) {
-        super(x, y, ySpeed, tx);
+        super(x, y, ySpeed + 3, tx);
         this.xSpeed = xSpeed;
         spr.setBounds(x, y, 20, 30);
     }

@@ -38,8 +38,10 @@ public class PantallaJuego implements Screen {
     private float posYNave;
     private FondoAnimado fondoAnimado;
 
+    private Oleadas oleadas;
 
-    private ArrayList<Enemigo> enemigos = new ArrayList<>();
+
+    private ArrayList<Enemigo> enemigos;
     private ArrayList<Proyectil> proyectiles = new ArrayList<>();
     private Nave4 nave;
     private ArrayList<Bullet> balas = new ArrayList<>();
@@ -68,12 +70,15 @@ public class PantallaJuego implements Screen {
             Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
         nave.setVidas(vidas);
 
-        EnemigoBasico1 enemigoBasico1 = new EnemigoBasico1(Gdx.graphics.getWidth() / 2 - 50, 700);
-        EnemigoBasico2 enemigoBasico2 = new EnemigoBasico2(Gdx.graphics.getWidth() / 2 - 150, 700);
-        EnemigoBasico3 enemigoBasico3 = new EnemigoBasico3(Gdx.graphics.getWidth() / 2 - 20, 700);
-        enemigos.add(enemigoBasico1);
-        enemigos.add(enemigoBasico2);
-        enemigos.add(enemigoBasico3);
+        //EnemigoBasico1 enemigoBasico1 = new EnemigoBasico1(Gdx.graphics.getWidth() / 2 - 50, 700);
+        //EnemigoBasico2 enemigoBasico2 = new EnemigoBasico2(Gdx.graphics.getWidth() / 2 - 150, 700);
+        //EnemigoBasico3 enemigoBasico3 = new EnemigoBasico3(Gdx.graphics.getWidth() / 2 - 20, 700);
+        //enemigos.add(enemigoBasico1);
+        //enemigos.add(enemigoBasico2);
+        //enemigos.add(enemigoBasico3);
+
+        oleadas = new Oleadas();
+        enemigos = new ArrayList<>(oleadas.generarOleada());
 
         // Inicializar el mapa de PowerUps
         powerUpMap = new HashMap<>();
@@ -85,7 +90,7 @@ public class PantallaJuego implements Screen {
     public Nave4 getNave() {
         return nave;
     }
-    
+
     public void dibujaEncabezado() {
         CharSequence str = "Vidas: " + nave.getVidas() + " Ronda: " + ronda;
         game.getFont().getData().setScale(2f);
@@ -101,7 +106,9 @@ public class PantallaJuego implements Screen {
         dibujarEnemigos(delta);
         actualizarBalas();
         actualizarProyectiles();
-        verificarAtaquesANave();
+        // BORRAR ESTO AL ACABAR EL TEST
+        nave.draw(batch, this);
+        //verificarAtaquesANave();
         verificarNaveDestruida();
         verificarFinRonda();
         batch.end();
@@ -251,11 +258,16 @@ public class PantallaJuego implements Screen {
     }
 
     public void verificarFinRonda(){
-        if (enemigos.isEmpty()) {
+        /*if (enemigos.isEmpty()) {
             Screen ss = new PantallaJuego(game, ronda + 1, nave.getVidas(), score);
             ss.resize(1200, 800);
             game.setScreen(ss);
             dispose();
+        }*/
+        if (enemigos.isEmpty()) {
+            ronda++;
+            oleadas.incrementarNivel(); // Incrementa el nivel de oleada en Oleadas
+            enemigos = new ArrayList<>(oleadas.generarOleada()); // Genera una nueva oleada
         }
     }
 

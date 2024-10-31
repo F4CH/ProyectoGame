@@ -43,7 +43,7 @@ public class Nave4 {
         this.destruida = false;
         this.herido = false;
         this.tiempoDisparo = 0;
-        this.intervaloDisparo = 10;
+        this.intervaloDisparo = 15;
         this.tiempoVulnerable = 0;
         this.tiempoVulnerableMax = 120;
         this.hitboxReduction = hitbox_default;
