@@ -30,8 +30,11 @@ public class FondoAnimado {
 
     public void dispose() {
         // Libera los recursos de la animación
-        for (TextureRegion frame : gifAnimation.getKeyFrames()) {
-            frame.getTexture().dispose();
+        for(Object obj : gifAnimation.getKeyFrames()) {
+            if(obj instanceof TextureRegion) {
+                TextureRegion region = (TextureRegion) obj;
+                region.getTexture().dispose();
+            }
         }
     }
 }
