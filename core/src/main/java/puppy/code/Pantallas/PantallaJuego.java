@@ -38,6 +38,9 @@ public class PantallaJuego implements Screen {
 
     private Oleadas oleadas;
 
+    private float tiempoEspera = 2.0f; // Tiempo de espera en segundos
+    private float contadorTiempo = 0; // Contador para el tiempo transcurrido
+    private boolean esperando = false; // Estado de espera
 
     private ArrayList<Enemigo> enemigos;
     private ArrayList<Proyectil> proyectiles = new ArrayList<>();
@@ -68,13 +71,6 @@ public class PantallaJuego implements Screen {
             Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3")));
         nave.setVidas(vidas);
 
-        //EnemigoBasico1 enemigoBasico1 = new EnemigoBasico1(Gdx.graphics.getWidth() / 2 - 50, 700);
-        //EnemigoBasico2 enemigoBasico2 = new EnemigoBasico2(Gdx.graphics.getWidth() / 2 - 150, 700);
-        //EnemigoBasico3 enemigoBasico3 = new EnemigoBasico3(Gdx.graphics.getWidth() / 2 - 20, 700);
-        //enemigos.add(enemigoBasico1);
-        //enemigos.add(enemigoBasico2);
-        //enemigos.add(enemigoBasico3);
-
         oleadas = new Oleadas();
         enemigos = new ArrayList<>(oleadas.generarOleada());
 
@@ -94,7 +90,7 @@ public class PantallaJuego implements Screen {
         game.getFont().getData().setScale(2f);
         game.getFont().draw(batch, str, 10, 30);
         game.getFont().draw(batch, "Score:" + this.score, Gdx.graphics.getWidth() - 200, 30);
-        game.getFont().draw(batch, "HighScore:" + game.getHighScore(), Gdx.graphics.getWidth() / 2 - 100, 30);
+        game.getFont().draw(batch, "HighScore:" + game.getHighScore(), (float) Gdx.graphics.getWidth() / 2 - 100, 30);
     }
 
     @Override
@@ -108,7 +104,7 @@ public class PantallaJuego implements Screen {
         nave.draw(batch, this);
         //verificarAtaquesANave();
         verificarNaveDestruida();
-        verificarFinRonda();
+        verificarFinRonda(delta);
         batch.end();
     }
 
@@ -255,17 +251,21 @@ public class PantallaJuego implements Screen {
         }
     }
 
-    public void verificarFinRonda(){
-        /*if (enemigos.isEmpty()) {
-            Screen ss = new PantallaJuego(game, ronda + 1, nave.getVidas(), score);
-            ss.resize(1200, 800);
-            game.setScreen(ss);
-            dispose();
-        }*/
-        if (enemigos.isEmpty()) {
+    public void verificarFinRonda(float delta){
+        if (enemigos.isEmpty() && !esperando) {
             ronda++;
             oleadas.incrementarNivel(); // Incrementa el nivel de oleada en Oleadas
-            enemigos = new ArrayList<>(oleadas.generarOleada()); // Genera una nueva oleada
+            esperando = true; // Inicia la espera
+        }
+
+        if (esperando) {
+            contadorTiempo += delta; // Incrementa el contador con el tiempo transcurrido
+
+            if (contadorTiempo >= tiempoEspera) {
+                esperando = false; // Termina la espera
+                contadorTiempo = 0; // Reinicia el contador
+                enemigos = new ArrayList<>(oleadas.generarOleada()); // Genera una nueva oleada
+            }
         }
     }
 
