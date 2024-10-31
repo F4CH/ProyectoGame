@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
+import java.util.Arrays;
+
 public class FondoAnimado {
     private Animation<TextureRegion> gifAnimation;
     private float elapsedTime = 0;
@@ -29,11 +31,15 @@ public class FondoAnimado {
     }
 
     public void dispose() {
-        // Libera los recursos de la animación
-        for(Object obj : gifAnimation.getKeyFrames()) {
-            if(obj instanceof TextureRegion) {
+        // Crea un nuevo arreglo de TextureRegion basado en los elementos de getKeyFrames()
+        Object[] frames = gifAnimation.getKeyFrames();
+
+        for (Object obj : frames) {
+            if (obj instanceof TextureRegion) {
                 TextureRegion region = (TextureRegion) obj;
-                region.getTexture().dispose();
+                if (region.getTexture() != null) {
+                    region.getTexture().dispose();
+                }
             }
         }
     }
