@@ -1,12 +1,8 @@
-package puppy.code;
+package puppy.code.Proyectiles;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
 
-public class Bullet extends Proyectil{
+public class Bullet extends Proyectil {
 
     // Constructor
     public Bullet(float x, float y, int xSpeed, int ySpeed, Texture tx) {

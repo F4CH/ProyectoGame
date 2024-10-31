@@ -1,20 +1,24 @@
-package puppy.code;
+package puppy.code.Enemigos;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
+import puppy.code.Pantallas.PantallaJuego;
+import puppy.code.Proyectiles.AtaqueEnemigo1;
+import puppy.code.Proyectiles.Bullet;
+import puppy.code.Proyectiles.Proyectil;
 
-public class EnemigoBasico1 extends Enemigo{
-    public EnemigoBasico1(int x, int y){
-        super(new Texture(Gdx.files.internal("thickrice.png")));
+public class EnemigoBasico3 extends Enemigo {
+    public EnemigoBasico3(int x, int y){
+        super(new Texture(Gdx.files.internal("youhoming.png")));
         this.vida = 10;
         this.hitbox_default = 30;
         this.speed_default = 2;
         this.intervaloCambioDireccion = 1.5f;
-        this.intervaloDisparo = 20;
+        this.intervaloDisparo = 80;
 
-        spr = new Sprite(new Texture(Gdx.files.internal("fairy_red.png")));
+        spr = new Sprite(new Texture(Gdx.files.internal("superfairy.png")));
         spr.setPosition(x, y);
         spr.setBounds(x, y, 80, 80);
         this.hitboxReduction = hitbox_default;
@@ -40,7 +44,7 @@ public class EnemigoBasico1 extends Enemigo{
     public void manejarDisparo(PantallaJuego juego){
         // Si es tiempo de disparar
         if (tiempoDisparo <= 0) {
-            int numProyectiles = 8; // Número de proyectiles a disparar en un círculo
+            int numProyectiles = 32; // Número de proyectiles a disparar en un círculo
             int velocidadProyectil = 4; // Velocidad del proyectil
 
             // Genera los proyectiles en un patrón circular
@@ -66,8 +70,10 @@ public class EnemigoBasico1 extends Enemigo{
         }
 
         // Disminuye el tiempo para el próximo disparo
+        //tiempoDisparo -= Gdx.graphics.getDeltaTime();
         if(tiempoDisparo > 0) tiempoDisparo--;
     }
+
 
     @Override
     public boolean checkCollision(Bullet b){

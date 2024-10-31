@@ -1,4 +1,4 @@
-package puppy.code;
+package puppy.code.Fondos;
 /* Copyright by Johannes Borchardt */
 /* LibGdx conversion 2014 by Anton Persson */
 /* Released under Apache 2.0 */

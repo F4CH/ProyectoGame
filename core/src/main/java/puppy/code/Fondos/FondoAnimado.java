@@ -1,11 +1,10 @@
-package puppy.code;
+package puppy.code.Fondos;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import puppy.code.GifDecoder;
 
 public class FondoAnimado {
     private Animation<TextureRegion> gifAnimation;

@@ -1,10 +1,12 @@
-package puppy.code;
+package puppy.code.Enemigos;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import puppy.code.Pantallas.PantallaJuego;
+import puppy.code.Proyectiles.Bullet;
 
 public abstract class Enemigo {
     protected int hitbox_default;

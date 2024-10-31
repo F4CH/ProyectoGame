@@ -1,10 +1,12 @@
 
-package puppy.code;
+package puppy.code.Pantallas;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
+import puppy.code.Fondos.FondoEstatico;
+import puppy.code.SpaceNavigation;
 
 public class PantallaPausa implements Screen {
     private SpaceNavigation game;

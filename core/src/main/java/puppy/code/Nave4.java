@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import puppy.code.Pantallas.PantallaJuego;
+import puppy.code.Proyectiles.Bullet;
+import puppy.code.Proyectiles.Proyectil;
 
 
 public class Nave4 {

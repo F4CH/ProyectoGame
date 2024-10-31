@@ -1,13 +1,9 @@
-package puppy.code;
+package puppy.code.Proyectiles;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 
-public class AtaqueEnemigo2 extends Proyectil{
+public class AtaqueEnemigo2 extends Proyectil {
     private float deltaAngle;
     private float angle;
 

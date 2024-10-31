@@ -1,6 +1,6 @@
 package puppy.code.PowerUps;
 
-import puppy.code.PantallaJuego;
+import puppy.code.Pantallas.PantallaJuego;
 
 public class BalasExtra implements PowerUp {
     @Override
