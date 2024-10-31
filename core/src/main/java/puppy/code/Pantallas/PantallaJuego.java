@@ -54,7 +54,7 @@ public class PantallaJuego implements Screen {
         this.juegoPausado = false;
 
         batch = game.getBatch();
-        fondoAnimado = new FondoAnimado("fondo.gif");
+        fondoAnimado = game.getFondoAnimado();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 640);
         gameMusic = Gdx.audio.newMusic(Gdx.files.internal("MusicGame.ogg"));
@@ -243,5 +243,6 @@ public class PantallaJuego implements Screen {
     @Override
     public void dispose() {
         this.gameMusic.dispose();
+        //fondoAnimado.dispose();
     }
 }

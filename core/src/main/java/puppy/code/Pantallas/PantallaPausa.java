@@ -75,5 +75,7 @@ public class PantallaPausa implements Screen {
 
     public void hide(){}
 
-    public void dispose(){}
+    public void dispose(){
+        fondoEstatico.dispose();
+    }
 }

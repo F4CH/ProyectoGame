@@ -97,6 +97,8 @@ public class PantallaGameOver implements Screen {
 
 	@Override
 	public void dispose() {
+        fondoEstatico.dispose();
+
 		// TODO Auto-generated method stub
 
 	}

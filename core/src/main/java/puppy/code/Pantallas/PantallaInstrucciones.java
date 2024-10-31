@@ -59,5 +59,7 @@ public class PantallaInstrucciones implements Screen{
 
     public void hide(){}
 
-    public void dispose(){}
+    public void dispose(){
+        fondoEstatico.dispose();
+    }
 }
