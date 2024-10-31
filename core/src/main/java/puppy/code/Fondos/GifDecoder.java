@@ -4,6 +4,7 @@ package puppy.code.Fondos;
 /* Released under Apache 2.0 */
 /* https://code.google.com/p/animated-gifs-in-android/ */
 
+//ESTA CLASE ESTA PARA UNICAMENTE TENER LOS FONDOS CON ANIMACION!!
 
 import java.io.InputStream;
 import java.util.Vector;
