@@ -30,7 +30,6 @@ public class PantallaJuego implements Screen {
     private SpaceNavigation game;
     private OrthographicCamera camera;
     private SpriteBatch batch;
-    private Sound explosionSound;
     private Music gameMusic;
     private int score;
     private int ronda;
@@ -58,8 +57,6 @@ public class PantallaJuego implements Screen {
         fondoAnimado = new FondoAnimado("fondo.gif");
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 640);
-        explosionSound = Gdx.audio.newSound(Gdx.files.internal("explosion.ogg"));
-        explosionSound.setVolume(1, 0.5f);
         gameMusic = Gdx.audio.newMusic(Gdx.files.internal("MusicGame.ogg"));
         gameMusic.setLooping(true);
         gameMusic.setVolume(0.5f);
@@ -245,7 +242,6 @@ public class PantallaJuego implements Screen {
 
     @Override
     public void dispose() {
-        this.explosionSound.dispose();
         this.gameMusic.dispose();
     }
 }
