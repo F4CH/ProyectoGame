@@ -10,16 +10,18 @@ import puppy.code.Proyectiles.Bullet;
 import puppy.code.Proyectiles.Proyectil;
 
 public class EnemigoBasico1 extends Enemigo {
-    public EnemigoBasico1(int x, int y){
-        super(new Texture(Gdx.files.internal("thickrice.png")));
+    public EnemigoBasico1(int x, int y, float tiempoEspera){
+        super(new Texture(Gdx.files.internal("thickrice.png")), tiempoEspera);
         this.vida = 10;
         this.hitbox_default = 30;
         this.speed_default = 2;
+        this.timeSinceLastDirectionChange = 1.5f;
         this.intervaloCambioDireccion = 1.5f;
         this.intervaloDisparo = 20;
 
         spr = new Sprite(new Texture(Gdx.files.internal("fairy_red.png")));
         spr.setPosition(x, y);
+        spr.setY(Gdx.graphics.getHeight());
         spr.setBounds(x, y, 80, 80);
         this.hitboxReduction = hitbox_default;
     }
