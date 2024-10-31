@@ -9,7 +9,7 @@ import puppy.code.Pantallas.PantallaMenu;
 
 
 public class SpaceNavigation extends Game {
-	private String nombreJuego = "Space Navigation";
+	private String nombreJuego = "Battle Of The Space";
 	private SpriteBatch batch;
 	private BitmapFont font;
 	private int highScore;

@@ -35,7 +35,7 @@ public class PantallaMenu implements Screen {
 
 		game.getBatch().begin();
         fondoEstatico.draw(game.getBatch());
-		game.getFont().draw(game.getBatch(), "Bienvenido a Space Navigation !", 140, 500);
+		game.getFont().draw(game.getBatch(), "Battle Of The Space !!", 140, 500);
         for(int i = 0; i < opciones.length; i++){
             if(i == opcionSeleccionada){
                 game.getFont().draw(game.getBatch(), "> " + opciones[i], 140, 400 - i * 50);
