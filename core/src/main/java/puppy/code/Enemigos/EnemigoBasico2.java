@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import puppy.code.Pantallas.PantallaJuego;
 import puppy.code.Proyectiles.AtaqueEnemigo2;
-import puppy.code.Proyectiles.Bullet;
 import puppy.code.Proyectiles.Proyectil;
 
 public class EnemigoBasico2 extends Enemigo {
@@ -21,7 +20,6 @@ public class EnemigoBasico2 extends Enemigo {
 
         spr = new Sprite(new Texture(Gdx.files.internal("fairy_blue.png")));
         spr.setPosition(x, y);
-        spr.setY(Gdx.graphics.getHeight());
         spr.setBounds(x, y, 80, 80);
         this.hitboxReduction = hitbox_default;
     }
@@ -54,15 +52,19 @@ public class EnemigoBasico2 extends Enemigo {
                 Proyectil proyectil = new AtaqueEnemigo2(
                     spr.getX() + spr.getWidth() / 2, // Posición x
                     spr.getY() + spr.getHeight() / 2, // Posición y
-                    velocidadProyectil,
-                    angulo,
+                    velocidadProyectil, // Velocidad del proyectil
+                    angulo, // Angulo del disparo
                     deltaAngle, // Incremento de ángulo para el espiral
-                    txProyectil
+                    txProyectil  // Textura del proyectil
                 );
+                // Añade el proyectil a la pantalla de juego
+
                 juego.agregarProyectil(proyectil);
             }
+            // Reinicia el tiempo para el próximo disparo
             tiempoDisparo = intervaloDisparo;
         }
+        // Disminuye el tiempo para el próximo disparo
         if (tiempoDisparo > 0) tiempoDisparo--;
     }
 }

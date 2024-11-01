@@ -21,7 +21,6 @@ public class EnemigoBasico1 extends Enemigo {
 
         spr = new Sprite(new Texture(Gdx.files.internal("fairy_red.png")));
         spr.setPosition(x, y);
-        spr.setY(Gdx.graphics.getHeight());
         spr.setBounds(x, y, 80, 80);
         this.hitboxReduction = hitbox_default;
     }
@@ -55,22 +54,16 @@ public class EnemigoBasico1 extends Enemigo {
                 Proyectil ataque = new AtaqueEnemigo1(
                     spr.getX() + spr.getWidth() / 2, // Posición x inicial del proyectil
                     spr.getY() + spr.getHeight() / 2, // Posición y inicial del proyectil
-                    velocidadProyectil,
+                    velocidadProyectil, // Velocidad del proyectil
                     angulo, // Ángulo de disparo
                     txProyectil // Textura del proyectil
                 );
-
                 // Añade el proyectil a la pantalla de juego
                 juego.agregarProyectil(ataque);
             }
-
-            // Reproduce el sonido de disparo (si es necesario)
-            // A PROGRAMAR soundDisparo.play();
-
             // Reinicia el tiempo para el próximo disparo
             tiempoDisparo = intervaloDisparo;
         }
-
         // Disminuye el tiempo para el próximo disparo
         if(tiempoDisparo > 0) tiempoDisparo--;
     }

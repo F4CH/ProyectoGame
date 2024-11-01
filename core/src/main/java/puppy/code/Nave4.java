@@ -15,7 +15,6 @@ import puppy.code.Proyectiles.Proyectil;
 
 public class Nave4 {
 
-    //private static final int damage_default = 20;
     private static final int hitbox_default = 30;
     private static final int speed_default = 1;
 
@@ -38,7 +37,8 @@ public class Nave4 {
     private boolean estadoBalasDiagonales = false;
     private int disparosDiagonales = 0;
 
-    public Nave4(int x, int y, Texture tx, Sound soundChoque, Texture txBala, Sound soundBala) {
+    // Constructor
+    public Nave4() {
         this.vidas = 3;
         this.destruida = false;
         this.herido = false;
@@ -48,14 +48,16 @@ public class Nave4 {
         this.tiempoVulnerableMax = 120;
         this.hitboxReduction = hitbox_default;
 
-    	sonidoHerido = soundChoque;
-    	this.soundBala = soundBala;
-    	this.txBala = txBala;
+    	sonidoHerido = Gdx.audio.newSound(Gdx.files.internal("hurt.ogg"));
+    	this.soundBala = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
+    	this.txBala = new Texture(Gdx.files.internal("Rocket2.png"));
 
-    	spr = new Sprite(tx);
-    	spr.setPosition(x, y);
-    	spr.setBounds(x, y, 45, 45);
+    	spr = new Sprite(new Texture(Gdx.files.internal("MainShip3.png")));
+    	spr.setPosition(Gdx.graphics.getWidth() / 2 - 50, 30);
+    	spr.setBounds(Gdx.graphics.getWidth() / 2 - 50, 30, 45, 45);
     }
+
+    // Metodo que dibuja la nave
     public void draw(SpriteBatch batch, PantallaJuego juego) {
         manejarVulnerabilidad();
         manejarMovimiento();
@@ -80,6 +82,7 @@ public class Nave4 {
 
     public int getCantidadBalasDiagonales(){return this.disparosDiagonales;}
 
+    // Metodo que maneja la vulnerabilidad de la nave
     public void manejarVulnerabilidad() {
         if (tiempoVulnerable > 0) {
             tiempoVulnerable--;
@@ -88,6 +91,7 @@ public class Nave4 {
         spr.setColor(herido ? 1 : 1, herido ? 0 : 1, 1 , 1);
     }
 
+    // Metodo que maneja el movimiento de la nave
     public void manejarMovimiento() {
         xVel = 0;
         yVel = 0;
@@ -100,6 +104,7 @@ public class Nave4 {
         spr.setPosition(spr.getX() + xVel, spr.getY() + yVel);
     }
 
+    // Metodo que maneja los rebotes con los extremos de la ventana
     private void manejarRebote() {
         float nuevoX = spr.getX() + xVel;
         float nuevoY = spr.getY() + yVel;
@@ -167,7 +172,7 @@ public class Nave4 {
         if (tiempoDisparo > 0) tiempoDisparo--;
     }
 
-
+    // Metodo para comprobar las colisiones de la nave al ser impactada
     public boolean checkCollision(Proyectil p) {
         // Solo aplica daño si no está en estado de vulnerabilidad
         if (tiempoVulnerable <= 0 && p.getArea().overlaps(this.getHitbox()) || (vidas == 1 && p.getArea().overlaps(this.getHitbox()))){
@@ -191,26 +196,32 @@ public class Nave4 {
     public boolean estaDestruido() {
         return !herido && destruida;
     }
+
     public boolean estaHerido() {
         return herido;
     }
 
     public int getVidas() {return vidas;}
-    //public boolean isDestruida() {return destruida;}
+
     public int getX() {return (int) spr.getX();}
+
     public int getY() {return (int) spr.getY();}
+
 	public void setVidas(int vidas2) {vidas = vidas2;}
 
+    // Metodo para detener el movimiento de la nave
     public void detenerMovimiento(){
         this.xVel = 0;
         this.yVel = 0;
     }
 
+    // Metodo para settear la posicion de la nave
     public void setPosition(float x , float y){
         spr.setPosition(x, y);
         detenerMovimiento();
     }
 
+    // Metodo que devuelve la hitbox de la nave
     public Rectangle getHitbox() {
         // Obtener el centro del Sprite
         float centerX = spr.getX() + spr.getWidth() / 2;
