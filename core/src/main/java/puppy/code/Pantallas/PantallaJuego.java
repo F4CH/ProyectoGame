@@ -101,8 +101,8 @@ public class PantallaJuego implements Screen {
         actualizarBalas();
         actualizarProyectiles();
         // BORRAR ESTO AL ACABAR EL TEST
-        nave.draw(batch, this);
-        //verificarAtaquesANave();
+        //nave.draw(batch, this);
+        verificarAtaquesANave();
         verificarNaveDestruida();
         verificarFinRonda(delta);
         batch.end();

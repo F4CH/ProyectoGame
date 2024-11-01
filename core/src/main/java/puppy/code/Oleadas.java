@@ -42,11 +42,11 @@ public class Oleadas {
         }
 
         return enemigos;*/
-        List<Enemigo> enemigos = new ArrayList<>();
+        /*List<Enemigo> enemigos = new ArrayList<>();
         int temporizador = 0;
 
         // Calcular el número de cada tipo de enemigo de forma progresiva y equilibrada
-        int numEnemigosBasico1 = Math.min(3 + nivelOleada / 3, 10);  // Limitar el crecimiento a un máximo de 10
+        int numEnemigosBasico1 = Math.min(2 + nivelOleada / 3, 10);  // Limitar el crecimiento a un máximo de 10
         int numEnemigosBasico2 = Math.min(1 + nivelOleada / 7, 5);   // El tipo 2 es el menos común y más difícil
         int numEnemigosBasico3 = Math.min(1 + nivelOleada / 5, 3);   // Se introduce lentamente
 
@@ -78,6 +78,35 @@ public class Oleadas {
                 temporizador++;
             }
         }
+        return enemigos;*/
+        List<Enemigo> enemigos = new ArrayList<>();
+        int totalEnemigos = Math.min(1 + nivelOleada / 2, 5);
+        int numBasico1 = Math.max(1, totalEnemigos / 3);
+        int numBasico2 = Math.max(1, totalEnemigos / 3);
+        int numBasico3 = totalEnemigos - numBasico1 - numBasico2;
+
+        int temporizador = 0;
+        int contadorBasico1 = 0, contadorBasico2 = 0, contadorBasico3 = 0;
+
+        // Agregar enemigos de manera intercalada hasta completar la cantidad de enemigos de cada tipo
+        while (contadorBasico1 < numBasico1 || contadorBasico2 < numBasico2 || contadorBasico3 < numBasico3) {
+            if (contadorBasico1 < numBasico1) {
+                enemigos.add(new EnemigoBasico1(calcularX(), Gdx.graphics.getHeight(), temporizador * 1.5f));
+                contadorBasico1++;
+                temporizador++;
+            }
+            if (contadorBasico2 < numBasico2) {
+                enemigos.add(new EnemigoBasico2(calcularX(), Gdx.graphics.getHeight(), temporizador * 1.5f));
+                contadorBasico2++;
+                temporizador++;
+            }
+            if (contadorBasico3 < numBasico3) {
+                enemigos.add(new EnemigoBasico3(calcularX(), Gdx.graphics.getHeight(), temporizador * 1.5f));
+                contadorBasico3++;
+                temporizador++;
+            }
+        }
+
         return enemigos;
     }
 

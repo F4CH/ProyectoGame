@@ -46,7 +46,7 @@ public class EnemigoBasico1 extends Enemigo {
     public void manejarDisparo(PantallaJuego juego){
         // Si es tiempo de disparar
         if (tiempoDisparo <= 0) {
-            int numProyectiles = 8; // Número de proyectiles a disparar en un círculo
+            int numProyectiles = 6; // Número de proyectiles a disparar en un círculo
             int velocidadProyectil = 4; // Velocidad del proyectil
 
             // Genera los proyectiles en un patrón circular

@@ -45,7 +45,7 @@ public class EnemigoBasico2 extends Enemigo {
     @Override
     public void manejarDisparo(PantallaJuego juego){
         if (tiempoDisparo <= 0) {
-            int numProyectiles = 8; // Número de proyectiles
+            int numProyectiles = 6; // Número de proyectiles
             int velocidadProyectil = 6; // Velocidad del proyectil
             float deltaAngle = 0.5f; // Cambia según la velocidad del giro en espiral
 
