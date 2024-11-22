@@ -9,7 +9,7 @@ primero tiene que descomprimir el archivo
 
 luego en el ide hay que seguir los siguientes pasos
 
-file->open->(seleccionan la carpeta que se descomprimio) y listo
+file->open->(seleccionan la carpeta en la que se descomprimio) y listo
 
 
 
