@@ -149,7 +149,7 @@ public class PantallaJuego implements Screen {
         this.gameMusic.dispose();
     }
 
-    public void comprobarPausa(){
+    public void comprobarPausa() {
         if (juegoPausado) return;
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             game.setScreen(new PantallaPausa(game, this));
@@ -158,7 +158,7 @@ public class PantallaJuego implements Screen {
         }
     }
 
-    public void iniciarComponentes(float delta){
+    public void iniciarComponentes(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         fondoAnimado.update(delta);
         batch.begin();
@@ -167,13 +167,13 @@ public class PantallaJuego implements Screen {
         nave.draw(batch, this);
     }
 
-    public void dibujarEnemigos(float delta){
+    public void dibujarEnemigos(float delta) {
         for (Enemigo e : enemigos) {
             e.draw(batch, this, delta);
         }
     }
 
-    public void actualizarBalas(){
+    public void actualizarBalas() {
         for (int i = 0; i < balas.size(); i++) {
             Bullet b = balas.get(i);
             b.update();
@@ -198,7 +198,7 @@ public class PantallaJuego implements Screen {
         }
     }
 
-    public void actualizarProyectiles(){
+    public void actualizarProyectiles() {
         for (int i = 0; i < proyectiles.size(); i++) {
             Proyectil p = proyectiles.get(i);
             p.update();
@@ -211,7 +211,7 @@ public class PantallaJuego implements Screen {
         }
     }
 
-    public void verificarAtaquesANave(){
+    public void verificarAtaquesANave() {
         nave.draw(batch, this);
         for (int i = 0; i < proyectiles.size(); i++) {
             Proyectil p = proyectiles.get(i);
@@ -224,7 +224,7 @@ public class PantallaJuego implements Screen {
         }
     }
 
-    public void verificarNaveDestruida(){
+    public void verificarNaveDestruida() {
         if (nave.estaDestruido()) {
             if (score > game.getHighScore()) {
                 game.setHighScore(score);
@@ -236,7 +236,7 @@ public class PantallaJuego implements Screen {
         }
     }
 
-    public void verificarFinRonda(float delta){
+    public void verificarFinRonda(float delta) {
         if (enemigos.isEmpty() && !esperando) {
             ronda++;
             oleadas.incrementarNivel(); // Incrementa el nivel de oleada en Oleadas
@@ -255,23 +255,10 @@ public class PantallaJuego implements Screen {
     }
 
     public void aplicarPowerUpSiCorresponde() {
-        if(score % 50 == 0){
-            PowerUp balasExtra = powerUpMap.get(50);
-            if(balasExtra != null){
-                balasExtra.aplicarPowerUp(this);
+        powerUpMap.forEach((scoreKey, powerUp) -> {
+            if (score % scoreKey == 0) {
+                powerUp.aplicarPowerUp(this, nave);
             }
-        }
-        if(score % 100 == 0){
-            PowerUp balasDiagonales = powerUpMap.get(100);
-            if(balasDiagonales != null){
-                balasDiagonales.aplicarPowerUp(this);
-            }
-        }
-        if(score % 300 == 0){
-            PowerUp vidasExtra = powerUpMap.get(300);
-            if(vidasExtra != null){
-                vidasExtra.aplicarPowerUp(this);
-            }
-        }
+        });
     }
 }

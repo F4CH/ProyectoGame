@@ -12,13 +12,16 @@ import puppy.code.Pantallas.PantallaJuego;
 import puppy.code.Proyectiles.Bullet;
 import puppy.code.Proyectiles.Proyectil;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class Nave4 {
 
     private static final int hitbox_default = 30;
     private static final int speed_default = 1;
 
-	private boolean destruida;
+    private boolean destruida;
     private int vidas;
     private float xVel;
     private float yVel;
@@ -37,6 +40,8 @@ public class Nave4 {
     private boolean estadoBalasDiagonales = false;
     private int disparosDiagonales = 0;
 
+    private Map<String, Integer> efectosActivos;
+
     // Constructor
     public Nave4() {
         this.vidas = 3;
@@ -48,13 +53,15 @@ public class Nave4 {
         this.tiempoVulnerableMax = 120;
         this.hitboxReduction = hitbox_default;
 
-    	sonidoHerido = Gdx.audio.newSound(Gdx.files.internal("hurt.ogg"));
-    	this.soundBala = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
-    	this.txBala = new Texture(Gdx.files.internal("Rocket2.png"));
+        this.efectosActivos = new HashMap<>();
 
-    	spr = new Sprite(new Texture(Gdx.files.internal("MainShip3.png")));
-    	spr.setPosition(Gdx.graphics.getWidth() / 2 - 50, 30);
-    	spr.setBounds(Gdx.graphics.getWidth() / 2 - 50, 30, 45, 45);
+        sonidoHerido = Gdx.audio.newSound(Gdx.files.internal("hurt.ogg"));
+        this.soundBala = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
+        this.txBala = new Texture(Gdx.files.internal("Rocket2.png"));
+
+        spr = new Sprite(new Texture(Gdx.files.internal("MainShip3.png")));
+        spr.setPosition(Gdx.graphics.getWidth() / 2 - 50, 30);
+        spr.setBounds(Gdx.graphics.getWidth() / 2 - 50, 30, 45, 45);
     }
 
     // Metodo que dibuja la nave
@@ -65,30 +72,13 @@ public class Nave4 {
         spr.draw(batch);
         manejarDisparo(juego);
     }
-
-    public void setEstadoBalasExtra(boolean estado){this.estadoBalasExtra = estado;}
-
-    public boolean getEstadoBalasExtra(){return this.estadoBalasExtra;}
-
-    public void setCantidadDisparosExtra(int powerUp){this.disparosPowerUp = powerUp;}
-
-    public int getCantidadDisparosExtra(){return this.disparosPowerUp;}
-
-    public void setEstadoBalasDiagonales(boolean estado){this.estadoBalasDiagonales = estado;}
-
-    public boolean getEstadoBalasDiagonales(){return this.estadoBalasDiagonales;}
-
-    public void setCantidadBalasDiagonales(int powerUp){this.disparosDiagonales = powerUp;}
-
-    public int getCantidadBalasDiagonales(){return this.disparosDiagonales;}
-
     // Metodo que maneja la vulnerabilidad de la nave
     public void manejarVulnerabilidad() {
         if (tiempoVulnerable > 0) {
             tiempoVulnerable--;
             herido = tiempoVulnerable > 0;
         }
-        spr.setColor(herido ? 1 : 1, herido ? 0 : 1, 1 , 1);
+        spr.setColor(herido ? 1 : 1, herido ? 0 : 1, 1, 1);
     }
 
     // Metodo que maneja el movimiento de la nave
@@ -96,10 +86,10 @@ public class Nave4 {
         xVel = 0;
         yVel = 0;
 
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) xVel -= speed_default;
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) xVel += speed_default;
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) yVel -= speed_default;
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)) yVel += speed_default;
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) xVel -= speed_default;
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) xVel += speed_default;
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) yVel -= speed_default;
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) yVel += speed_default;
 
         spr.setPosition(spr.getX() + xVel, spr.getY() + yVel);
     }
@@ -115,68 +105,34 @@ public class Nave4 {
 
     private void manejarDisparo(PantallaJuego juego) {
         if (tiempoDisparo <= 0 && !herido && Gdx.input.isKeyPressed(Input.Keys.Z)) {
+            Bullet balaCentral = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
+            juego.agregarBala(balaCentral);
 
-            if (getEstadoBalasExtra() && getEstadoBalasDiagonales()) {
-                // Disparo de balas extra y diagonales
-                Bullet balaIzqDiag = new Bullet(spr.getX() + spr.getWidth() / 2 - 25, spr.getY() + spr.getHeight() - 5, -5, 3, txBala);
-                juego.agregarBala(balaIzqDiag);
-                Bullet balaDerDiag = new Bullet(spr.getX() + spr.getWidth() / 2 + 15, spr.getY() + spr.getHeight() - 5, 5, 3, txBala);
-                juego.agregarBala(balaDerDiag);
-                Bullet balaCenDiag = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
-                juego.agregarBala(balaCenDiag);
-                Bullet balaIzqExtra = new Bullet(spr.getX() + spr.getWidth() / 2 - 25, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
-                juego.agregarBala(balaIzqExtra);
-                Bullet balaDerExtra = new Bullet(spr.getX() + spr.getWidth() / 2 + 15, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
-                juego.agregarBala(balaDerExtra);
-                Bullet balaCenExtra = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
-                juego.agregarBala(balaCenExtra);
-                setCantidadDisparosExtra(getCantidadDisparosExtra() - 1);
-                setCantidadBalasDiagonales(getCantidadBalasDiagonales() - 1);
-                if (getCantidadDisparosExtra() == 0) setEstadoBalasExtra(false);
-                if (getCantidadBalasDiagonales() == 0) setEstadoBalasDiagonales(false);
-
-            } else if (getEstadoBalasExtra()) {
-                // Disparo de balas extra
+            if (efectosActivos.containsKey("BalasExtra")) {
                 Bullet balaIzq = new Bullet(spr.getX() + spr.getWidth() / 2 - 25, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
-                juego.agregarBala(balaIzq);
                 Bullet balaDer = new Bullet(spr.getX() + spr.getWidth() / 2 + 15, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
-                juego.agregarBala(balaDer);
-                Bullet balaCen = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
-                juego.agregarBala(balaCen);
-                setCantidadDisparosExtra(getCantidadDisparosExtra() - 1);
-                if (getCantidadDisparosExtra() == 0) setEstadoBalasExtra(false);
-
-            } else if (getEstadoBalasDiagonales()) {
-                // Disparo de balas diagonales
-                Bullet balaIzq = new Bullet(spr.getX() + spr.getWidth() / 2 - 25, spr.getY() + spr.getHeight() - 5, -5, 3, txBala);
                 juego.agregarBala(balaIzq);
-                Bullet balaDer = new Bullet(spr.getX() + spr.getWidth() / 2 + 15, spr.getY() + spr.getHeight() - 5, 5, 3, txBala);
                 juego.agregarBala(balaDer);
-                Bullet balaCen = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
-                juego.agregarBala(balaCen);
-                setCantidadBalasDiagonales(getCantidadBalasDiagonales() - 1);
-                if (getCantidadBalasDiagonales() == 0) setEstadoBalasDiagonales(false);
-
-            } else {
-                // Disparo normal
-                Bullet bala = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
-                juego.agregarBala(bala);
+                reducirEfectoDisparos("BalasExtra");
             }
-
-            // Establece el tiempo de espera para el siguiente disparo
+            if (efectosActivos.containsKey("BalasDiagonales")) {
+                Bullet balaIzq = new Bullet(spr.getX() + spr.getWidth() / 2 - 25, spr.getY() + spr.getHeight() - 5, -5, 3, txBala);
+                Bullet balaDer = new Bullet(spr.getX() + spr.getWidth() / 2 + 15, spr.getY() + spr.getHeight() - 5, 5, 3, txBala);
+                juego.agregarBala(balaIzq);
+                juego.agregarBala(balaDer);
+                reducirEfectoDisparos("BalasDiagonales");
+            }
             tiempoDisparo = intervaloDisparo;
             soundBala.play();
         }
-
-        // Decremento del tiempo de espera entre disparos
         if (tiempoDisparo > 0) tiempoDisparo--;
     }
 
     // Metodo para comprobar las colisiones de la nave al ser impactada
     public boolean checkCollision(Proyectil p) {
         // Solo aplica daño si no está en estado de vulnerabilidad
-        if (tiempoVulnerable <= 0 && p.getArea().overlaps(this.getHitbox()) || (vidas == 1 && p.getArea().overlaps(this.getHitbox()))){
-            if(vidas == 1){
+        if (tiempoVulnerable <= 0 && p.getArea().overlaps(this.getHitbox()) || (vidas == 1 && p.getArea().overlaps(this.getHitbox()))) {
+            if (vidas == 1) {
                 vidas = 0;
                 destruida = true;
                 sonidoHerido.play();
@@ -201,22 +157,37 @@ public class Nave4 {
         return herido;
     }
 
-    public int getVidas() {return vidas;}
+    public int getVidas() {
+        return vidas;
+    }
 
-    public int getX() {return (int) spr.getX();}
+    public int getX() {
+        return (int) spr.getX();
+    }
 
-    public int getY() {return (int) spr.getY();}
+    public int getY() {
+        return (int) spr.getY();
+    }
+    /*
+    public void setVidas(int vidas2) {
+        vidas = vidas2;
+    }
+     */
 
-	public void setVidas(int vidas2) {vidas = vidas2;}
+    public void incrementarVidas(int cantidad){
+        vidas += cantidad;
+    }
+
+
 
     // Metodo para detener el movimiento de la nave
-    public void detenerMovimiento(){
+    public void detenerMovimiento() {
         this.xVel = 0;
         this.yVel = 0;
     }
 
     // Metodo para settear la posicion de la nave
-    public void setPosition(float x , float y){
+    public void setPosition(float x, float y) {
         spr.setPosition(x, y);
         detenerMovimiento();
     }
@@ -238,4 +209,18 @@ public class Nave4 {
         // Crear y devolver la nueva hitbox centrada y reducida
         return new Rectangle(hitboxX, hitboxY, reducedWidth, reducedHeight);
     }
+
+    public void agregarEfecto(String efecto, int cantidadDisparos) {
+        efectosActivos.put(efecto, efectosActivos.getOrDefault(efecto, 0) + cantidadDisparos);
+    }
+
+    public void reducirEfectoDisparos(String efecto) {
+        if (efectosActivos.containsKey(efecto)) {
+            int disparosRestantes = efectosActivos.get(efecto) - 1;
+            if (disparosRestantes <= 0) {
+                efectosActivos.remove(efecto);
+            } else efectosActivos.put(efecto, disparosRestantes);
+        }
+    }
 }
+
