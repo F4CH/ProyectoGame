@@ -9,62 +9,54 @@ import puppy.code.Proyectiles.AtaqueEnemigo2;
 import puppy.code.Proyectiles.Proyectil;
 
 public class EnemigoBasico2 extends Enemigo {
-    public EnemigoBasico2(int x, int y, float tiempoEspera){
+    public EnemigoBasico2(int x, int y, float tiempoEspera) {
         super(new Texture(Gdx.files.internal("fairy_circle_red.png")), tiempoEspera);
-        this.vida = 4;
-        this.hitbox_default = 30;
-        this.speed_default = 2;
-        this.timeSinceLastDirectionChange = 1.5f;
-        this.intervaloCambioDireccion = 1.5f;
-        this.intervaloDisparo = 20;
+        setVida(4);
+        setHitboxDefault(30);
+        setSpeedDefault(2);
+        setTimeSinceLastDirectionChange(1.5f);
+        setIntervaloCambioDireccion(1.5f);
+        setIntervaloDisparo(20);
 
-        spr = new Sprite(new Texture(Gdx.files.internal("fairy_blue.png")));
-        spr.setPosition(x, y);
-        spr.setBounds(x, y, 80, 80);
-        this.hitboxReduction = hitbox_default;
+        Sprite sprite = new Sprite(new Texture(Gdx.files.internal("fairy_blue.png")));
+        sprite.setPosition(x, y);
+        sprite.setBounds(x, y, 80, 80);
+        setSpr(sprite);
+        setHitboxReduction(getHitboxDefault());
     }
 
     @Override
-    public void manejarMovimiento(float delta){
-        // Incrementa el tiempo acumulado desde el último cambio de dirección
-        timeSinceLastDirectionChange += delta;
+    public void manejarMovimiento(float delta) {
+        setTimeSinceLastDirectionChange(getTimeSinceLastDirectionChange() + delta);
 
-        // Verifica si el intervalo de cambio de dirección ha sido alcanzado
-        if (timeSinceLastDirectionChange >= intervaloCambioDireccion) {
-            // Genera nuevas velocidades aleatorias para X y Y dentro de -speed_default a speed_default
-            xVel = MathUtils.random(-1, 1) * speed_default;
-            yVel = MathUtils.random(-1, 1) * speed_default;
-
-            // Reinicia el contador de tiempo acumulado
-            timeSinceLastDirectionChange = 0;
+        if (getTimeSinceLastDirectionChange() >= getIntervaloCambioDireccion()) {
+            setXVel(MathUtils.random(-1, 1) * getSpeedDefault());
+            setYVel(MathUtils.random(-1, 1) * getSpeedDefault());
+            setTimeSinceLastDirectionChange(0);
         }
     }
 
     @Override
-    public void manejarDisparo(PantallaJuego juego){
-        if (tiempoDisparo <= 0) {
-            int numProyectiles = 6; // Número de proyectiles
-            int velocidadProyectil = 6; // Velocidad del proyectil
-            float deltaAngle = 0.5f; // Cambia según la velocidad del giro en espiral
+    public void manejarDisparo(PantallaJuego juego) {
+        if (getTiempoDisparo() <= 0) {
+            int numProyectiles = 6;
+            int velocidadProyectil = 6;
+            float deltaAngle = 0.5f;
 
             for (int i = 0; i < numProyectiles; i++) {
                 float angulo = i * (360.0f / numProyectiles);
                 Proyectil proyectil = new AtaqueEnemigo2(
-                    spr.getX() + spr.getWidth() / 2, // Posición x
-                    spr.getY() + spr.getHeight() / 2, // Posición y
-                    velocidadProyectil, // Velocidad del proyectil
-                    angulo, // Angulo del disparo
-                    deltaAngle, // Incremento de ángulo para el espiral
-                    txProyectil  // Textura del proyectil
+                    getSpr().getX() + getSpr().getWidth() / 2,
+                    getSpr().getY() + getSpr().getHeight() / 2,
+                    velocidadProyectil,
+                    angulo,
+                    deltaAngle,
+                    getTxProyectil()
                 );
-                // Añade el proyectil a la pantalla de juego
-
                 juego.agregarProyectil(proyectil);
             }
-            // Reinicia el tiempo para el próximo disparo
-            tiempoDisparo = intervaloDisparo;
+            setTiempoDisparo(getIntervaloDisparo());
         }
-        // Disminuye el tiempo para el próximo disparo
-        if (tiempoDisparo > 0) tiempoDisparo--;
+        if (getTiempoDisparo() > 0) setTiempoDisparo(getTiempoDisparo() - 1);
     }
 }

@@ -182,7 +182,7 @@ public class PantallaJuego implements Screen {
                 Enemigo e = enemigos.get(j);
                 if (e.checkCollision(b)) {
                     b.setDestroyed();
-                    if (e.estaDestruida()) {
+                    if (e.isDestruida()) {
                         enemigos.remove(j);
                         j--;
                         score += 50;

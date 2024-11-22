@@ -9,72 +9,69 @@ import puppy.code.Pantallas.PantallaJuego;
 import puppy.code.Proyectiles.Bullet;
 
 public abstract class Enemigo {
-    protected int hitbox_default;
-    protected int speed_default;
-    protected boolean destruida;
-    protected int vida;
-    protected float xVel;
-    protected float yVel;
-    protected Sprite spr;
-    protected Texture txProyectil;
-    protected int tiempoDisparo;
-    protected int intervaloDisparo;
-    protected float hitboxReduction;
-    protected float timeSinceLastDirectionChange;
-    protected float intervaloCambioDireccion;
+    private int hitbox_default;
+    private int speed_default;
+    private boolean destruida;
+    private int vida;
+    private float xVel;
+    private float yVel;
+    private Sprite spr;
+    private Texture txProyectil;
+    private int tiempoDisparo;
+    private int intervaloDisparo;
+    private float hitboxReduction;
+    private float timeSinceLastDirectionChange;
+    private float intervaloCambioDireccion;
 
-    protected float tiempoEspera; // Tiempo de espera antes de mostrar el enemigo
-    protected float contadorEspera; // Contador para medir el tiempo transcurrido
-    protected boolean apareciendo; // Estado de si el enemigo está en proceso de aparecer
+    private float tiempoEspera;
+    private float contadorEspera;
+    private boolean apareciendo;
 
-    protected float alturaInicial; // Altura desde donde aparecerán los enemigos
-    protected float velocidadEntrada; // Velocidad a la que el enemigo bajará
-    protected boolean enMovimiento; // Estado de si el enemigo está en movimiento de entrada
+    private float alturaInicial;
+    private float velocidadEntrada;
+    private boolean enMovimiento;
 
-    public Enemigo(Texture txAtaque, float tiempoEspera){
+    public Enemigo(Texture txAtaque, float tiempoEspera) {
         this.destruida = false;
         this.tiempoDisparo = 0;
         this.intervaloDisparo = 0;
 
         this.txProyectil = txAtaque;
 
-        this.tiempoEspera = tiempoEspera; // Almacena el tiempo de espera
-        this.contadorEspera = 0; // Inicializa el contador de espera
-        this.apareciendo = true; // Marca el enemigo como en proceso de aparecer
+        this.tiempoEspera = tiempoEspera;
+        this.contadorEspera = 0;
+        this.apareciendo = true;
 
-        this.alturaInicial = Gdx.graphics.getHeight(); // La parte superior de la pantalla
-        this.velocidadEntrada = 550; // Establece la velocidad de entrada
+        this.alturaInicial = Gdx.graphics.getHeight();
+        this.velocidadEntrada = 550;
     }
 
-    public void draw(SpriteBatch batch, PantallaJuego juego, float delta){
-        if (apareciendo) {
-            contadorEspera += delta; // Incrementa el contador con el tiempo transcurrido
+    public void draw(SpriteBatch batch, PantallaJuego juego, float delta) {
+        if (isApareciendo()) {
+            setContadorEspera(getContadorEspera() + delta);
 
-            // Verifica si el tiempo de espera ha pasado
-            if (contadorEspera >= tiempoEspera) {
-                apareciendo = false; // El enemigo ya no está en proceso de aparecer
-                contadorEspera = 0; // Reinicia el contador
-                enMovimiento = true; // Activa el movimiento de entrada
+            if (getContadorEspera() >= getTiempoEspera()) {
+                setApareciendo(false);
+                setContadorEspera(0);
+                setEnMovimiento(true);
             } else {
-                return; // No dibuja el enemigo si aún está en espera
+                return;
             }
         }
 
-        if (enMovimiento) {
-            // Mueve al enemigo desde la altura inicial hacia abajo hasta llegar a la posición final
-            float posicionYFinal = 600; // Cambia esto a la posición y final deseada
-            spr.setY(spr.getY() - velocidadEntrada * delta); // Disminuye y de acuerdo a la velocidad y delta
-            spr.draw(batch);
+        if (isEnMovimiento()) {
+            float posicionYFinal = 600;
+            getSpr().setY(getSpr().getY() - getVelocidadEntrada() * delta);
+            getSpr().draw(batch);
 
-            // Verifica si el enemigo ha llegado a su posición final (y)
-            if (spr.getY() <= posicionYFinal) {
-                spr.setY(posicionYFinal); // Fija en la posición final para evitar fluctuaciones
-                enMovimiento = false; // Termina el movimiento de entrada
+            if (getSpr().getY() <= posicionYFinal) {
+                getSpr().setY(posicionYFinal);
+                setEnMovimiento(false);
             }
         } else {
             manejarMovimiento(delta);
             manejarRebote();
-            spr.draw(batch);
+            getSpr().draw(batch);
             manejarDisparo(juego);
         }
     }
@@ -83,59 +80,101 @@ public abstract class Enemigo {
 
     public abstract void manejarDisparo(PantallaJuego juego);
 
-    public void manejarRebote(){
-        // Calcula las nuevas posiciones basadas en la velocidad actual
-        float nuevoX = spr.getX() + xVel;
-        float nuevoY = spr.getY() + yVel;
+    public void manejarRebote() {
+        float nuevoX = getSpr().getX() + getXVel();
+        float nuevoY = getSpr().getY() + getYVel();
 
-        // Limita la posición a la mitad superior de la pantalla
         float alturaLimiteSuperior = Gdx.graphics.getHeight() * 0.75f;
 
-        // Asegura que el enemigo se mantenga dentro de los límites de la pantalla en el eje X
         if (nuevoX < 0) nuevoX = 0;
-        if (nuevoX > Gdx.graphics.getWidth() - spr.getWidth()) nuevoX = Gdx.graphics.getWidth() - spr.getWidth();
+        if (nuevoX > Gdx.graphics.getWidth() - getSpr().getWidth())
+            nuevoX = Gdx.graphics.getWidth() - getSpr().getWidth();
 
-        // Asegura que el enemigo se mantenga dentro de los límites de la mitad superior en el eje Y
         if (nuevoY < alturaLimiteSuperior) nuevoY = alturaLimiteSuperior;
-        if (nuevoY > Gdx.graphics.getHeight() - spr.getHeight()) nuevoY = Gdx.graphics.getHeight() - spr.getHeight();
+        if (nuevoY > Gdx.graphics.getHeight() - getSpr().getHeight())
+            nuevoY = Gdx.graphics.getHeight() - getSpr().getHeight();
 
-        // Actualiza la posición del sprite
-        spr.setPosition(nuevoX, nuevoY);
+        getSpr().setPosition(nuevoX, nuevoY);
     }
 
-    public boolean checkCollision(Bullet b){
-        if(enMovimiento) return false;
-        if (b.getArea().overlaps(this.getHitbox())){
-            vida--;
-            if (vida <= 0) destruida = true;
+    public boolean checkCollision(Bullet b) {
+        if (isEnMovimiento()) return false;
+        if (b.getArea().overlaps(this.getHitbox())) {
+            setVida(getVida() - 1);
+            if (getVida() <= 0) setDestruida(true);
             return true;
         }
         return false;
     }
 
-    public boolean estaDestruida(){
-        return destruida;
-    }
-
-    public int getVida() {return vida;}
-    public int getX() {return (int) spr.getX();}
-    public int getY() {return (int) spr.getY();}
-    public void setVida(int vida2) {vida = vida2;}
-
     public Rectangle getHitbox() {
-        // Obtener el centro del Sprite
-        float centerX = spr.getX() + spr.getWidth() / 2;
-        float centerY = spr.getY() + spr.getHeight() / 2;
+        float centerX = getSpr().getX() + getSpr().getWidth() / 2;
+        float centerY = getSpr().getY() + getSpr().getHeight() / 2;
 
-        // Calcular las dimensiones reducidas de la hitbox
-        float reducedWidth = spr.getWidth() - hitboxReduction;
-        float reducedHeight = spr.getHeight() - hitboxReduction;
+        float reducedWidth = getSpr().getWidth() - getHitboxReduction();
+        float reducedHeight = getSpr().getHeight() - getHitboxReduction();
 
-        // Calcular la esquina inferior izquierda de la hitbox centrada
         float hitboxX = centerX - reducedWidth / 2;
         float hitboxY = centerY - reducedHeight / 2;
 
-        // Crear y devolver la nueva hitbox centrada y reducida
         return new Rectangle(hitboxX, hitboxY, reducedWidth, reducedHeight);
     }
+
+    // Getters y Setters
+    public int getHitboxDefault() { return hitbox_default; }
+    public void setHitboxDefault(int hitbox_default) { this.hitbox_default = hitbox_default; }
+
+    public int getSpeedDefault() { return speed_default; }
+    public void setSpeedDefault(int speed_default) { this.speed_default = speed_default; }
+
+    public boolean isDestruida() { return destruida; }
+    public void setDestruida(boolean destruida) { this.destruida = destruida; }
+
+    public int getVida() { return vida; }
+    public void setVida(int vida) { this.vida = vida; }
+
+    public float getXVel() { return xVel; }
+    public void setXVel(float xVel) { this.xVel = xVel; }
+
+    public float getYVel() { return yVel; }
+    public void setYVel(float yVel) { this.yVel = yVel; }
+
+    public Sprite getSpr() { return spr; }
+    public void setSpr(Sprite spr) { this.spr = spr; }
+
+    public Texture getTxProyectil() { return txProyectil; }
+    public void setTxProyectil(Texture txProyectil) { this.txProyectil = txProyectil; }
+
+    public int getTiempoDisparo() { return tiempoDisparo; }
+    public void setTiempoDisparo(int tiempoDisparo) { this.tiempoDisparo = tiempoDisparo; }
+
+    public int getIntervaloDisparo() { return intervaloDisparo; }
+    public void setIntervaloDisparo(int intervaloDisparo) { this.intervaloDisparo = intervaloDisparo; }
+
+    public float getHitboxReduction() { return hitboxReduction; }
+    public void setHitboxReduction(float hitboxReduction) { this.hitboxReduction = hitboxReduction; }
+
+    public float getTimeSinceLastDirectionChange() { return timeSinceLastDirectionChange; }
+    public void setTimeSinceLastDirectionChange(float timeSinceLastDirectionChange) { this.timeSinceLastDirectionChange = timeSinceLastDirectionChange; }
+
+    public float getIntervaloCambioDireccion() { return intervaloCambioDireccion; }
+    public void setIntervaloCambioDireccion(float intervaloCambioDireccion) { this.intervaloCambioDireccion = intervaloCambioDireccion; }
+
+    public float getTiempoEspera() { return tiempoEspera; }
+    public void setTiempoEspera(float tiempoEspera) { this.tiempoEspera = tiempoEspera; }
+
+    public float getContadorEspera() { return contadorEspera; }
+    public void setContadorEspera(float contadorEspera) { this.contadorEspera = contadorEspera; }
+
+    public boolean isApareciendo() { return apareciendo; }
+    public void setApareciendo(boolean apareciendo) { this.apareciendo = apareciendo; }
+
+    public float getAlturaInicial() { return alturaInicial; }
+    public void setAlturaInicial(float alturaInicial) { this.alturaInicial = alturaInicial; }
+
+    public float getVelocidadEntrada() { return velocidadEntrada; }
+    public void setVelocidadEntrada(float velocidadEntrada) { this.velocidadEntrada = velocidadEntrada; }
+
+    public boolean isEnMovimiento() { return enMovimiento; }
+    public void setEnMovimiento(boolean enMovimiento) { this.enMovimiento = enMovimiento; }
 }
