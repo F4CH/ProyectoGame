@@ -9,11 +9,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import puppy.code.Pantallas.PantallaJuego;
+import puppy.code.PowerUps.BalasDiagonales;
+import puppy.code.PowerUps.BalasExtra;
+import puppy.code.PowerUps.PowerUp;
+import puppy.code.PowerUps.PowerUpDisparos;
 import puppy.code.Proyectiles.Bullet;
 import puppy.code.Proyectiles.Proyectil;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Nave4 {
@@ -39,8 +43,8 @@ public class Nave4 {
     private int disparosPowerUp = 0;
     private boolean estadoBalasDiagonales = false;
     private int disparosDiagonales = 0;
+    private List<PowerUpDisparos> powerUpsActivos;
 
-    private Map<String, Integer> efectosActivos;
 
     // Constructor
     public Nave4() {
@@ -52,8 +56,7 @@ public class Nave4 {
         this.tiempoVulnerable = 0;
         this.tiempoVulnerableMax = 120;
         this.hitboxReduction = hitbox_default;
-
-        this.efectosActivos = new HashMap<>();
+        this.powerUpsActivos = new ArrayList<>();
 
         sonidoHerido = Gdx.audio.newSound(Gdx.files.internal("hurt.ogg"));
         this.soundBala = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
@@ -105,28 +108,34 @@ public class Nave4 {
 
     private void manejarDisparo(PantallaJuego juego) {
         if (tiempoDisparo <= 0 && !herido && Gdx.input.isKeyPressed(Input.Keys.Z)) {
-            Bullet balaCentral = new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
-            juego.agregarBala(balaCentral);
+            // Generar las balas centrales por defecto
+            List<Bullet> balasGeneradas = new ArrayList<>();
+            balasGeneradas.add(new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight(), 0, 3, txBala));
 
-            if (efectosActivos.containsKey("BalasExtra")) {
-                Bullet balaIzq = new Bullet(spr.getX() + spr.getWidth() / 2 - 25, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
-                Bullet balaDer = new Bullet(spr.getX() + spr.getWidth() / 2 + 15, spr.getY() + spr.getHeight() - 5, 0, 3, txBala);
-                juego.agregarBala(balaIzq);
-                juego.agregarBala(balaDer);
-                reducirEfectoDisparos("BalasExtra");
+            // Generar balas adicionales desde los PowerUps activos
+            for (PowerUpDisparos powerUp : powerUpsActivos) {
+                balasGeneradas.addAll(powerUp.generarBalas(this));
             }
-            if (efectosActivos.containsKey("BalasDiagonales")) {
-                Bullet balaIzq = new Bullet(spr.getX() + spr.getWidth() / 2 - 25, spr.getY() + spr.getHeight() - 5, -5, 3, txBala);
-                Bullet balaDer = new Bullet(spr.getX() + spr.getWidth() / 2 + 15, spr.getY() + spr.getHeight() - 5, 5, 3, txBala);
-                juego.agregarBala(balaIzq);
-                juego.agregarBala(balaDer);
-                reducirEfectoDisparos("BalasDiagonales");
+
+            // Agregar todas las balas al juego
+            for (Bullet bala : balasGeneradas) {
+                juego.agregarBala(bala);
             }
-            tiempoDisparo = intervaloDisparo;
+
+            // Reproducir el sonido de disparo
             soundBala.play();
+
+            powerUpsActivos.removeIf(powerUpDisparos -> !powerUpDisparos.isActivo());
+            // Establecer el tiempo de espera para el siguiente disparo
+            tiempoDisparo = intervaloDisparo;
         }
-        if (tiempoDisparo > 0) tiempoDisparo--;
+
+        // Decrementar el tiempo de espera entre disparos
+        if (tiempoDisparo > 0) {
+            tiempoDisparo--;
+        }
     }
+
 
     // Metodo para comprobar las colisiones de la nave al ser impactada
     public boolean checkCollision(Proyectil p) {
@@ -178,8 +187,6 @@ public class Nave4 {
         vidas += cantidad;
     }
 
-
-
     // Metodo para detener el movimiento de la nave
     public void detenerMovimiento() {
         this.xVel = 0;
@@ -209,18 +216,16 @@ public class Nave4 {
         // Crear y devolver la nueva hitbox centrada y reducida
         return new Rectangle(hitboxX, hitboxY, reducedWidth, reducedHeight);
     }
-
-    public void agregarEfecto(String efecto, int cantidadDisparos) {
-        efectosActivos.put(efecto, efectosActivos.getOrDefault(efecto, 0) + cantidadDisparos);
+    public void agregarPowerUp(PowerUpDisparos powerUp) {
+        powerUpsActivos.add(powerUp);
     }
 
-    public void reducirEfectoDisparos(String efecto) {
-        if (efectosActivos.containsKey(efecto)) {
-            int disparosRestantes = efectosActivos.get(efecto) - 1;
-            if (disparosRestantes <= 0) {
-                efectosActivos.remove(efecto);
-            } else efectosActivos.put(efecto, disparosRestantes);
-        }
+    public Sprite getSprite() {
+        return spr;
+    }
+
+    public Texture getTexture() {
+        return txBala;
     }
 }
 

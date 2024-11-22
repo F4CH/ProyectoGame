@@ -12,10 +12,7 @@ import puppy.code.Enemigos.Enemigo;
 import puppy.code.Fondos.FondoAnimado;
 import puppy.code.Nave4;
 import puppy.code.Oleadas;
-import puppy.code.PowerUps.BalasDiagonales;
-import puppy.code.PowerUps.BalasExtra;
-import puppy.code.PowerUps.PowerUp;
-import puppy.code.PowerUps.VidasExtra;
+import puppy.code.PowerUps.*;
 import puppy.code.Proyectiles.Bullet;
 import puppy.code.Proyectiles.Proyectil;
 import puppy.code.SpaceNavigation;
@@ -42,7 +39,9 @@ public class PantallaJuego implements Screen {
     private ArrayList<Proyectil> proyectiles = new ArrayList<>(); // Array de ataques enemigos
     private Nave4 nave; // Nave del jugador
     private ArrayList<Bullet> balas = new ArrayList<>(); // Array de balas disparadas por el jugador
-    private final Map<Integer, PowerUp> powerUpMap; // Mapa para guardar los PowerUps
+    private final Map<Integer, VidasPowerUp> powerUpVidasMap;
+    private final Map<Integer, PowerUpDisparos> powerUpDisparosMap;
+
 
     public PantallaJuego(SpaceNavigation game) {
         this.game = game; // Se asigna el juego recibido
@@ -61,10 +60,12 @@ public class PantallaJuego implements Screen {
         oleadas = new Oleadas(); // Se inicializan las oleadas de enemigos
         enemigos = new ArrayList<>(oleadas.generarOleada()); // Se crea el array con los enemigos de la ronda
         // Inicializar el mapa de PowerUps junto con los Power Ups correspondientes
-        powerUpMap = new HashMap<>();
-        powerUpMap.put(50, new BalasExtra()); // PowerUp de balas extra
-        powerUpMap.put(100, new BalasDiagonales()); // PowerUp de balas diagonales
-        powerUpMap.put(300, new VidasExtra()); // PowerUp de vidas extras
+        powerUpVidasMap = new HashMap<>();
+        powerUpDisparosMap = new HashMap<>();
+
+        powerUpDisparosMap.put(50, new BalasExtra()); // PowerUp de balas extra
+        powerUpDisparosMap.put(100, new BalasDiagonales()); // PowerUp de balas diagonales
+        powerUpVidasMap.put(300, new VidasExtra()); // vidas extra
     }
 
     @Override
@@ -254,10 +255,19 @@ public class PantallaJuego implements Screen {
         }
     }
 
+    // Metodo que aplica los PowerUps de acuerdo al puntaje
     public void aplicarPowerUpSiCorresponde() {
-        powerUpMap.forEach((scoreKey, powerUp) -> {
+        // PowerUps de disparos
+        powerUpDisparosMap.forEach((scoreKey, powerUpDisparos) -> {
             if (score % scoreKey == 0) {
-                powerUp.aplicarPowerUp(this, nave);
+                powerUpDisparos.aplicarPowerUp(this, nave);
+            }
+        });
+
+        // PowerUps de vidas
+        powerUpVidasMap.forEach((scoreKey, powerUpVidas) -> {
+            if (score % scoreKey == 0) {
+                powerUpVidas.aplicarPowerUp(this, nave);
             }
         });
     }
