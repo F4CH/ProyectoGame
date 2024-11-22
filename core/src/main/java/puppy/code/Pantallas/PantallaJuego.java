@@ -260,6 +260,11 @@ public class PantallaJuego implements Screen {
         // PowerUps de disparos
         powerUpDisparosMap.forEach((scoreKey, powerUpDisparos) -> {
             if (score % scoreKey == 0) {
+                if (powerUpDisparos instanceof BalasExtra) {
+                    ((BalasExtra) powerUpDisparos).refrescar();
+                } else if (powerUpDisparos instanceof BalasDiagonales) {
+                    ((BalasDiagonales) powerUpDisparos).refrescar();
+                }
                 powerUpDisparos.aplicarPowerUp(this, nave);
             }
         });

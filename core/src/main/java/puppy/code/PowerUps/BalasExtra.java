@@ -32,6 +32,10 @@ public class BalasExtra implements PowerUpDisparos {
         return balas;
     }
 
+    public void refrescar(){
+        this.disparosRestantes = 60;
+    }
+
     public boolean isActivo(){
         return disparosRestantes > 0;
     }
