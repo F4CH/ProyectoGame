@@ -1,4 +1,6 @@
-package puppy.code.Pantallas;
+package puppy.code.Patrones;
+
+import puppy.code.Pantallas.*;
 
 public interface PantallaFactory {
     PantallaMenu crearPantallaMenu();

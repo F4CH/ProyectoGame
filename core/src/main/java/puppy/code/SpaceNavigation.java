@@ -1,12 +1,10 @@
 package puppy.code;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import puppy.code.Fondos.FondoAnimado;
-import puppy.code.Pantallas.PantallaFactory;
-import puppy.code.Pantallas.PantallaMenu;
+import puppy.code.Patrones.PantallaFactory;
 import puppy.code.Patrones.SpaceNavegationPantallaFactory;
 
 
