@@ -1,4 +1,3 @@
-
 package puppy.code.Pantallas;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -56,10 +55,10 @@ public class PantallaPausa implements Screen {
                 game.setScreen(pantallaJuego);
                 pantallaJuego.reanudarMusica();
             }else if(opcionSeleccionada == 1){
-                game.setScreen(game.getPantallaFactory().crearPantallaJuego());
+                game.setScreen(new PantallaJuego(game));
                 pantallaJuego.dispose();
             }else if(opcionSeleccionada == 2){
-                game.setScreen(game.getPantallaFactory().crearPantallaMenu());
+                game.setScreen(new PantallaMenu(game));
                 pantallaJuego.dispose();
             }
         }

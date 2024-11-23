@@ -1,11 +1,11 @@
 package puppy.code;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import puppy.code.Fondos.FondoAnimado;
-import puppy.code.Patrones.PantallaFactory;
-import puppy.code.Patrones.SpaceNavegationPantallaFactory;
+import puppy.code.Pantallas.*;
 
 
 public class SpaceNavigation extends Game {
@@ -14,7 +14,6 @@ public class SpaceNavigation extends Game {
 	private BitmapFont font;
 	private int highScore;
     private FondoAnimado fondoAnimado;
-    private PantallaFactory pantallaFactory;
 
 
 	public void create() {
@@ -23,8 +22,8 @@ public class SpaceNavigation extends Game {
 		font = new BitmapFont(); // usa Arial font x defecto
 		font.getData().setScale(2f);
         fondoAnimado = new FondoAnimado("fondo.gif");
-        pantallaFactory = new SpaceNavegationPantallaFactory(this);
-		this.setScreen(pantallaFactory.crearPantallaMenu());
+        Screen ss = new PantallaMenu(this);
+        this.setScreen(ss);
 	}
 
 	public void render() {
@@ -49,7 +48,4 @@ public class SpaceNavigation extends Game {
         return fondoAnimado;
     }
 
-    public PantallaFactory getPantallaFactory() {
-        return pantallaFactory;
-    }
 }

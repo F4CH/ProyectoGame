@@ -53,9 +53,9 @@ public class PantallaMenu implements Screen {
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
             if(opcionSeleccionada == 0){
-                game.setScreen(game.getPantallaFactory().crearPantallaJuego());
+                game.setScreen(new PantallaJuego(game));
             }else if (opcionSeleccionada == 1) {
-                game.setScreen(game.getPantallaFactory().crearPantallaInstrucciones());
+                game.setScreen(new PantallaInstrucciones(game));
                 dispose();
             }else if(opcionSeleccionada == 2){
                 Gdx.app.exit();

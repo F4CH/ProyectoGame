@@ -131,7 +131,7 @@ public class PantallaJuego implements Screen {
             nave.detenerMovimiento();
         }
         gameMusic.pause();
-        game.setScreen(game.getPantallaFactory().crearPantallaPausa(this));
+        game.setScreen(new PantallaPausa(game, this));;
     }
 
     @Override
@@ -142,7 +142,7 @@ public class PantallaJuego implements Screen {
             nave.detenerMovimiento();
         }
         gameMusic.play();
-        game.setScreen(game.getPantallaFactory().crearPantallaPausa(this));
+        game.setScreen(new PantallaJuego(game));
     }
 
     @Override
@@ -157,7 +157,7 @@ public class PantallaJuego implements Screen {
     public void comprobarPausa() {
         if (juegoPausado) return;
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            game.setScreen(game.getPantallaFactory().crearPantallaPausa(this));
+            game.setScreen(new PantallaPausa(game, this));
             gameMusic.pause();
             juegoPausado = true;
         }
@@ -234,7 +234,9 @@ public class PantallaJuego implements Screen {
             if (score > ManejoHighScore.getInstance().getHighScore()) {
                 ManejoHighScore.getInstance().setHighScore(score);
             }
-           game.setScreen(game.getPantallaFactory().crearPantallaGameOver());
+            Screen ss = new PantallaGameOver(game);
+            ss.resize(1200, 800);
+            game.setScreen(ss);
             dispose();
         }
     }
