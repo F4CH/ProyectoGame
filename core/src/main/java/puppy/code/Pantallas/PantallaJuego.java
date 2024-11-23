@@ -60,7 +60,7 @@ public class PantallaJuego implements Screen {
         gameMusic.play(); // Se inicia la música
         nave = new Nave4(); // Se inicializa la nave dle jugador
         oleadas = new Oleadas(); // Se inicializan las oleadas de enemigos
-        enemigos = new ArrayList<>(oleadas.generarOleada()); // Se crea el array con los enemigos de la ronda
+        enemigos = (ArrayList<Enemigo>) oleadas.generarOleada(); // Se crea el array con los enemigos de la ronda
         // Inicializar el mapa de PowerUps junto con los Power Ups correspondientes
         powerUpVidasMap = new HashMap<>();
         powerUpDisparosMap = new HashMap<>();
@@ -244,19 +244,17 @@ public class PantallaJuego implements Screen {
     public void verificarFinRonda(float delta) {
         if (enemigos.isEmpty() && !esperando) {
             ronda++;
-
-
-            oleadas.incrementarNivel(); // Incrementa el nivel de oleada en Oleadas
-            esperando = true; // Inicia la espera
+            oleadas.incrementarNivel(); // Incrementa el nivel
+            esperando = true; // Inicia la espera antes de generar la nueva oleada
         }
 
         if (esperando) {
-            contadorTiempo += delta; // Incrementa el contador con el tiempo transcurrido
+            contadorTiempo += delta; // Incrementa el tiempo de espera
 
             if (contadorTiempo >= tiempoEspera) {
                 esperando = false; // Termina la espera
-                contadorTiempo = 0; // Reinicia el contador
-                enemigos = new ArrayList<>(oleadas.generarOleada()); // Genera una nueva oleada
+                contadorTiempo = 0;
+                enemigos = (ArrayList<Enemigo>) oleadas.generarOleada(); // Genera la nueva oleada
             }
         }
     }
