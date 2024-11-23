@@ -12,6 +12,7 @@ import puppy.code.Enemigos.Enemigo;
 import puppy.code.Fondos.FondoAnimado;
 import puppy.code.Nave4;
 import puppy.code.Oleadas;
+import puppy.code.Patrones.ManejoHighScore;
 import puppy.code.PowerUps.*;
 import puppy.code.Proyectiles.Bullet;
 import puppy.code.Proyectiles.Proyectil;
@@ -48,6 +49,8 @@ public class PantallaJuego implements Screen {
         this.ronda = 1; // Se inicia en la ronda 1
         this.score = 0; // Se inicia el score en 0
         this.juegoPausado = false; // Se asigna la pausa en false
+        int highScore = ManejoHighScore.getInstance().getHighScore();
+
         batch = game.getBatch(); // Se asigna el batch
         fondoAnimado = game.getFondoAnimado(); // Se asigna el fondo
         camera = new OrthographicCamera(); // Se crea la camara
@@ -66,6 +69,8 @@ public class PantallaJuego implements Screen {
         powerUpDisparosMap.put(50, new BalasExtra()); // PowerUp de balas extra
         powerUpDisparosMap.put(100, new BalasDiagonales()); // PowerUp de balas diagonales
         powerUpVidasMap.put(300, new VidasExtra()); // vidas extra
+
+
     }
 
     @Override
@@ -92,7 +97,7 @@ public class PantallaJuego implements Screen {
         game.getFont().getData().setScale(2f);
         game.getFont().draw(batch, str, 10, 30);
         game.getFont().draw(batch, "Score:" + this.score, Gdx.graphics.getWidth() - 200, 30);
-        game.getFont().draw(batch, "HighScore:" + game.getHighScore(), (float) Gdx.graphics.getWidth() / 2 - 100, 30);
+        game.getFont().draw(batch, "HighScore:" + ManejoHighScore.getInstance().getHighScore(), (float) Gdx.graphics.getWidth() / 2 - 100, 30);
     }
 
 
@@ -227,8 +232,8 @@ public class PantallaJuego implements Screen {
 
     public void verificarNaveDestruida() {
         if (nave.estaDestruido()) {
-            if (score > game.getHighScore()) {
-                game.setHighScore(score);
+            if (score > ManejoHighScore.getInstance().getHighScore()) {
+                ManejoHighScore.getInstance().setHighScore(score);
             }
             Screen ss = new PantallaGameOver(game);
             ss.resize(1200, 800);
@@ -240,6 +245,8 @@ public class PantallaJuego implements Screen {
     public void verificarFinRonda(float delta) {
         if (enemigos.isEmpty() && !esperando) {
             ronda++;
+
+
             oleadas.incrementarNivel(); // Incrementa el nivel de oleada en Oleadas
             esperando = true; // Inicia la espera
         }

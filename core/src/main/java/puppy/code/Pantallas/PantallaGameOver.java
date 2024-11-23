@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.ScreenUtils;
 import puppy.code.Fondos.FondoEstatico;
+import puppy.code.Patrones.ManejoHighScore;
 import puppy.code.SpaceNavigation;
 
 
@@ -36,6 +37,8 @@ public class PantallaGameOver implements Screen {
 		game.getBatch().begin();
         fondoEstatico.draw(game.getBatch());
 		game.getFont().draw(game.getBatch(), "Game Over", 140 , 500);
+        int highScore = ManejoHighScore.getInstance().getHighScore();
+        game.getFont().draw(game.getBatch(), "High Score: " + highScore, 300, 450);
 
         for(int i = 0 ; i < opciones.length ; i++){
             if(i == opcionSeleccionada){
