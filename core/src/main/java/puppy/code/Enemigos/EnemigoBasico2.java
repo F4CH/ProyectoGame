@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import puppy.code.Pantallas.PantallaJuego;
+import puppy.code.Patrones.Enemigo;
 import puppy.code.Proyectiles.AtaqueEnemigo2;
 import puppy.code.Proyectiles.Proyectil;
 

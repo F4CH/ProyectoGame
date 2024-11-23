@@ -44,7 +44,7 @@ public class PantallaInstrucciones implements Screen{
         game.getBatch().end();
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
-            game.setScreen(new PantallaMenu(game));
+            game.setScreen(game.getPantallaFactory().crearPantallaMenu());
             dispose();
         }
     }

@@ -1,5 +1,5 @@
 package puppy.code.Patrones;
-
+//SINGLETON
 import puppy.code.CargaYGuardado.HighScoreGuardadoCarga;
 
 public class ManejoHighScore {

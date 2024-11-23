@@ -21,7 +21,6 @@ public class PantallaGameOver implements Screen {
 
 	public PantallaGameOver(SpaceNavigation game) {
 		this.game = game;
-
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1200, 800);
         fondoEstatico = new FondoEstatico("FondoGameOver.png");
@@ -37,6 +36,7 @@ public class PantallaGameOver implements Screen {
 		game.getBatch().begin();
         fondoEstatico.draw(game.getBatch());
 		game.getFont().draw(game.getBatch(), "Game Over", 140 , 500);
+
         int highScore = ManejoHighScore.getInstance().getHighScore();
         game.getFont().draw(game.getBatch(), "High Score: " + highScore, 300, 450);
 
@@ -58,10 +58,10 @@ public class PantallaGameOver implements Screen {
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)){
             if(opcionSeleccionada == 0){
-                game.setScreen(new PantallaJuego(game));
+                game.setScreen(game.getPantallaFactory().crearPantallaJuego());
                 dispose();
             }else if (opcionSeleccionada == 1) {
-                game.setScreen(new PantallaMenu(game));
+                game.setScreen(game.getPantallaFactory().crearPantallaMenu());
                 dispose();
             }
         }

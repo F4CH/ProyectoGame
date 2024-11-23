@@ -56,10 +56,10 @@ public class PantallaPausa implements Screen {
                 game.setScreen(pantallaJuego);
                 pantallaJuego.reanudarMusica();
             }else if(opcionSeleccionada == 1){
-                game.setScreen(new PantallaJuego(game));
+                game.setScreen(game.getPantallaFactory().crearPantallaJuego());
                 pantallaJuego.dispose();
             }else if(opcionSeleccionada == 2){
-                game.setScreen(new PantallaMenu(game));
+                game.setScreen(game.getPantallaFactory().crearPantallaMenu());
                 pantallaJuego.dispose();
             }
         }

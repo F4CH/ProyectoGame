@@ -2,7 +2,7 @@ package puppy.code;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
-import puppy.code.Enemigos.Enemigo;
+import puppy.code.Patrones.Enemigo;
 import puppy.code.Enemigos.EnemigoBasico1;
 import puppy.code.Enemigos.EnemigoBasico2;
 import puppy.code.Enemigos.EnemigoBasico3;
@@ -10,7 +10,6 @@ import puppy.code.Enemigos.EnemigoBasico3;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class Oleadas {
     private int nivelOleada;

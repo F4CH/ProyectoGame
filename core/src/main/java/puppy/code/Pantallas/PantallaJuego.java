@@ -6,9 +6,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import puppy.code.Enemigos.Enemigo;
+import puppy.code.Patrones.Enemigo;
 import puppy.code.Fondos.FondoAnimado;
 import puppy.code.Nave4;
 import puppy.code.Oleadas;
@@ -132,7 +131,7 @@ public class PantallaJuego implements Screen {
             nave.detenerMovimiento();
         }
         gameMusic.pause();
-        game.setScreen(new PantallaPausa(game, this));
+        game.setScreen(game.getPantallaFactory().crearPantallaPausa(this));
     }
 
     @Override
@@ -143,7 +142,7 @@ public class PantallaJuego implements Screen {
             nave.detenerMovimiento();
         }
         gameMusic.play();
-        game.setScreen(new PantallaJuego(game));
+        game.setScreen(game.getPantallaFactory().crearPantallaPausa(this));
     }
 
     @Override
@@ -158,7 +157,7 @@ public class PantallaJuego implements Screen {
     public void comprobarPausa() {
         if (juegoPausado) return;
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            game.setScreen(new PantallaPausa(game, this));
+            game.setScreen(game.getPantallaFactory().crearPantallaPausa(this));
             gameMusic.pause();
             juegoPausado = true;
         }
@@ -235,9 +234,7 @@ public class PantallaJuego implements Screen {
             if (score > ManejoHighScore.getInstance().getHighScore()) {
                 ManejoHighScore.getInstance().setHighScore(score);
             }
-            Screen ss = new PantallaGameOver(game);
-            ss.resize(1200, 800);
-            game.setScreen(ss);
+           game.setScreen(game.getPantallaFactory().crearPantallaGameOver());
             dispose();
         }
     }
