@@ -9,14 +9,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import puppy.code.Pantallas.PantallaJuego;
-import puppy.code.PowerUps.BalasDiagonales;
-import puppy.code.PowerUps.BalasExtra;
-import puppy.code.PowerUps.PowerUp;
-import puppy.code.PowerUps.PowerUpDisparos;
-import puppy.code.Proyectiles.Bullet;
+import puppy.code.Patrones.EstrategiaDisparo;
 import puppy.code.Proyectiles.Proyectil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -34,16 +29,13 @@ public class Nave4 {
     private Sound soundBala;
     private Texture txBala;
     private boolean herido;
-    private int tiempoDisparo;
-    private int intervaloDisparo;
     private int tiempoVulnerable;
     private int tiempoVulnerableMax;
     private float hitboxReduction;
-    private boolean estadoBalasExtra = false;
-    private int disparosPowerUp = 0;
-    private boolean estadoBalasDiagonales = false;
-    private int disparosDiagonales = 0;
-    private List<PowerUpDisparos> powerUpsActivos;
+    private List<EstrategiaDisparo> powerUpsActivos;
+
+    private DisparoBasico disparoBasico;
+    private ControladorDisparo controladorDisparo;
 
 
     // Constructor
@@ -51,12 +43,11 @@ public class Nave4 {
         this.vidas = 3;
         this.destruida = false;
         this.herido = false;
-        this.tiempoDisparo = 0;
-        this.intervaloDisparo = 15;
         this.tiempoVulnerable = 0;
         this.tiempoVulnerableMax = 120;
         this.hitboxReduction = hitbox_default;
-        this.powerUpsActivos = new ArrayList<>();
+        this.disparoBasico = new DisparoBasico();
+        this.controladorDisparo = new ControladorDisparo(disparoBasico);
 
         sonidoHerido = Gdx.audio.newSound(Gdx.files.internal("hurt.ogg"));
         this.soundBala = Gdx.audio.newSound(Gdx.files.internal("pop-sound.mp3"));
@@ -107,33 +98,7 @@ public class Nave4 {
     }
 
     private void manejarDisparo(PantallaJuego juego) {
-        if (tiempoDisparo <= 0 && !herido && Gdx.input.isKeyPressed(Input.Keys.Z)) {
-            // Generar las balas centrales por defecto
-            List<Bullet> balasGeneradas = new ArrayList<>();
-            balasGeneradas.add(new Bullet(spr.getX() + spr.getWidth() / 2 - 5, spr.getY() + spr.getHeight(), 0, 3, txBala));
-
-            // Generar balas adicionales desde los PowerUps activos
-            for (PowerUpDisparos powerUp : powerUpsActivos) {
-                balasGeneradas.addAll(powerUp.generarBalas(this));
-            }
-
-            // Agregar todas las balas al juego
-            for (Bullet bala : balasGeneradas) {
-                juego.agregarBala(bala);
-            }
-
-            // Reproducir el sonido de disparo
-            soundBala.play();
-
-            powerUpsActivos.removeIf(powerUpDisparos -> !powerUpDisparos.isActivo());
-            // Establecer el tiempo de espera para el siguiente disparo
-            tiempoDisparo = intervaloDisparo;
-        }
-
-        // Decrementar el tiempo de espera entre disparos
-        if (tiempoDisparo > 0) {
-            tiempoDisparo--;
-        }
+        controladorDisparo.disparar(juego, this);
     }
 
 
@@ -216,7 +181,7 @@ public class Nave4 {
         // Crear y devolver la nueva hitbox centrada y reducida
         return new Rectangle(hitboxX, hitboxY, reducedWidth, reducedHeight);
     }
-    public void agregarPowerUp(PowerUpDisparos powerUp) {
+    public void agregarPowerUp(EstrategiaDisparo powerUp) {
         powerUpsActivos.add(powerUp);
     }
 
@@ -226,6 +191,22 @@ public class Nave4 {
 
     public Texture getTexture() {
         return txBala;
+    }
+
+    public void cambiarEstrategiaDisparo(EstrategiaDisparo nuevaEstrategia) {
+        controladorDisparo.setEstrategia(nuevaEstrategia);
+    }
+
+    public void sonidoDisparo(){
+        soundBala.play();
+    }
+
+    public void reestablecerDisparoBasico(){
+        cambiarEstrategiaDisparo(disparoBasico);
+    }
+
+    public EstrategiaDisparo getEstrategia(){
+        return controladorDisparo.getEstrategia();
     }
 }
 

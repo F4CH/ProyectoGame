@@ -11,6 +11,7 @@ import puppy.code.Patrones.Enemigo;
 import puppy.code.Fondos.FondoAnimado;
 import puppy.code.Nave4;
 import puppy.code.Oleadas;
+import puppy.code.Patrones.EstrategiaDisparo;
 import puppy.code.Patrones.ManejoHighScore;
 import puppy.code.PowerUps.*;
 import puppy.code.Proyectiles.Bullet;
@@ -40,7 +41,7 @@ public class PantallaJuego implements Screen {
     private Nave4 nave; // Nave del jugador
     private ArrayList<Bullet> balas = new ArrayList<>(); // Array de balas disparadas por el jugador
     private final Map<Integer, VidasPowerUp> powerUpVidasMap;
-    private final Map<Integer, PowerUpDisparos> powerUpDisparosMap;
+    private final Map<Integer, EstrategiaDisparo> powerUpDisparosMap;
 
 
     public PantallaJuego(SpaceNavigation game) {
@@ -65,8 +66,8 @@ public class PantallaJuego implements Screen {
         powerUpVidasMap = new HashMap<>();
         powerUpDisparosMap = new HashMap<>();
 
-        powerUpDisparosMap.put(50, new BalasExtra()); // PowerUp de balas extra
-        powerUpDisparosMap.put(100, new BalasDiagonales()); // PowerUp de balas diagonales
+        powerUpDisparosMap.put(100, new BalasExtra()); // PowerUp de balas extra
+        powerUpDisparosMap.put(300, new BalasDiagonales()); // PowerUp de balas diagonales
         powerUpVidasMap.put(300, new VidasExtra()); // vidas extra
 
 
@@ -262,14 +263,9 @@ public class PantallaJuego implements Screen {
     // Metodo que aplica los PowerUps de acuerdo al puntaje
     public void aplicarPowerUpSiCorresponde() {
         // PowerUps de disparos
-        powerUpDisparosMap.forEach((scoreKey, powerUpDisparos) -> {
-            if (score % scoreKey == 0) {
-                if (powerUpDisparos instanceof BalasExtra) {
-                    ((BalasExtra) powerUpDisparos).refrescar();
-                } else if (powerUpDisparos instanceof BalasDiagonales) {
-                    ((BalasDiagonales) powerUpDisparos).refrescar();
-                }
-                powerUpDisparos.aplicarPowerUp(this, nave);
+        powerUpDisparosMap.forEach((scoreKey, estrategiaDisparo) -> {
+            if (score % scoreKey == 0 && estrategiaDisparo.obtenerScore() > nave.getEstrategia().obtenerScore()) {
+                nave.cambiarEstrategiaDisparo(estrategiaDisparo);
             }
         });
 
