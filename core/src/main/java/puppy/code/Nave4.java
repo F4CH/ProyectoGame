@@ -46,6 +46,7 @@ public class Nave4 {
         this.tiempoVulnerable = 0;
         this.tiempoVulnerableMax = 120;
         this.hitboxReduction = hitbox_default;
+
         this.disparoBasico = new DisparoBasico();
         this.controladorDisparo = new ControladorDisparo(disparoBasico);
 

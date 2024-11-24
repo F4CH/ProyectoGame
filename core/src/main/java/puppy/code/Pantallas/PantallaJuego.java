@@ -66,8 +66,10 @@ public class PantallaJuego implements Screen {
         powerUpVidasMap = new HashMap<>();
         powerUpDisparosMap = new HashMap<>();
 
-        powerUpDisparosMap.put(100, new BalasExtra()); // PowerUp de balas extra
-        powerUpDisparosMap.put(300, new BalasDiagonales()); // PowerUp de balas diagonales
+        BalasExtra balasExtra = new BalasExtra();
+        BalasDiagonales balasDiagonales = new BalasDiagonales();
+        powerUpDisparosMap.put(balasExtra.obtenerScore(), balasExtra); // PowerUp de balas extra
+        powerUpDisparosMap.put(balasDiagonales.obtenerScore(), balasDiagonales); // PowerUp de balas diagonales
         powerUpVidasMap.put(300, new VidasExtra()); // vidas extra
 
 
