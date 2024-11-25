@@ -32,7 +32,6 @@ public class Nave4 {
     private int tiempoVulnerable;
     private int tiempoVulnerableMax;
     private float hitboxReduction;
-    private List<EstrategiaDisparo> powerUpsActivos;
 
     private DisparoBasico disparoBasico;
     private ControladorDisparo controladorDisparo;
@@ -143,11 +142,6 @@ public class Nave4 {
     public int getY() {
         return (int) spr.getY();
     }
-    /*
-    public void setVidas(int vidas2) {
-        vidas = vidas2;
-    }
-     */
 
     public void incrementarVidas(int cantidad){
         vidas += cantidad;
@@ -181,9 +175,6 @@ public class Nave4 {
 
         // Crear y devolver la nueva hitbox centrada y reducida
         return new Rectangle(hitboxX, hitboxY, reducedWidth, reducedHeight);
-    }
-    public void agregarPowerUp(EstrategiaDisparo powerUp) {
-        powerUpsActivos.add(powerUp);
     }
 
     public Sprite getSprite() {

@@ -1,13 +1,9 @@
 package puppy.code.Proyectiles;
 
-import com.badlogic.gdx.graphics.Texture;
-
 public class Bullet extends Proyectil {
 
-    public Bullet(float x, float y, int xSpeed, int ySpeed, Texture tx) {
-        super(x, y, ySpeed + 3, tx);
-        setXSpeed(xSpeed);
-        getSpr().setBounds(x, y, 20, 30);
+    public Bullet(){
+        super();
     }
 
     @Override

@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import puppy.code.Pantallas.PantallaJuego;
 import puppy.code.Nave4;
+import puppy.code.Patrones.BulletDirector;
+import puppy.code.Patrones.ConcreteBulletBuilder;
 import puppy.code.Patrones.EstrategiaDisparo;
 import puppy.code.Proyectiles.Bullet;
 
@@ -24,6 +26,11 @@ public class BalasExtra implements EstrategiaDisparo {
     public void disparar(PantallaJuego juego, Nave4 nave){
         // Validar si se puede disparar
         if (tiempoDisparo <= 0 && !nave.estaHerido() && Gdx.input.isKeyPressed(Input.Keys.Z)) {
+            // Crear una instancia de la Directora y del Builder
+            BulletDirector director = new BulletDirector();
+            ConcreteBulletBuilder builder = new ConcreteBulletBuilder();
+            director.setBuilder(builder);
+
             // Generar las balas extra
             List<Bullet> balasGeneradas = new ArrayList<>();
 
@@ -37,10 +44,11 @@ public class BalasExtra implements EstrategiaDisparo {
                 float x = nave.getSprite().getX() + nave.getSprite().getWidth() / 2;
                 float y = nave.getSprite().getY() + nave.getSprite().getHeight();
 
-                // Disparar dos balas adicionales a los lados
-                balasGeneradas.add(new Bullet(x - 5, y, 0, 3, txBala));
-                balasGeneradas.add(new Bullet(x - 25, y - 5, 0, 3, txBala));
-                balasGeneradas.add(new Bullet(x + 15, y - 5, 0, 3, txBala));
+                // Construir las balas
+                balasGeneradas.add(director.construir(x - 5, y, 0, 6, txBala));       // Bala central
+                balasGeneradas.add(director.construir(x - 25, y - 5, 0, 6, txBala)); // Bala izquierda
+                balasGeneradas.add(director.construir(x + 15, y - 5, 0, 6, txBala)); // Bala derecha
+
                 disparosRestantes--; // Reducir los disparos restantes
             }
 

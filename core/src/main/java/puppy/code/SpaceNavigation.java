@@ -9,15 +9,12 @@ import puppy.code.Pantallas.*;
 
 
 public class SpaceNavigation extends Game {
-	private String nombreJuego = "Battle Of The Space";
 	private SpriteBatch batch;
 	private BitmapFont font;
-	private int highScore;
     private FondoAnimado fondoAnimado;
 
 
 	public void create() {
-		highScore = 0;
 		batch = new SpriteBatch();
 		font = new BitmapFont(); // usa Arial font x defecto
 		font.getData().setScale(2f);

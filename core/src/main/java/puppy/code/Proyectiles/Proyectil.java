@@ -26,15 +26,8 @@ public abstract class Proyectil {
         spr.setBounds(x, y, 30, 30);
     }
 
-    public Proyectil(float x, float y, int ySpeed, Texture tx) {
-        this.spr = new Sprite(tx);
-        this.spr.setPosition(x, y);
+    public Proyectil(){
         this.destroyed = false;
-
-        this.xSpeed = 0;
-        this.ySpeed = ySpeed + 1;
-
-        spr.setBounds(x, y, 30, 30);
     }
 
     public abstract void update();
