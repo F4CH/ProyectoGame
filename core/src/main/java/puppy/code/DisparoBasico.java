@@ -13,7 +13,7 @@ import java.util.List;
 
 public class DisparoBasico implements EstrategiaDisparo {
     private int tiempoDisparo = 0;
-    private int intervaloDisparo = 15;
+    private int intervaloDisparo = 25;
     private int scoreDeActivacion = 0;
 
     public DisparoBasico() {}

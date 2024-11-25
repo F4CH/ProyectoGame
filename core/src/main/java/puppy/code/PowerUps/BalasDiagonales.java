@@ -16,11 +16,11 @@ import java.util.List;
 public class BalasDiagonales implements EstrategiaDisparo {
     private int disparosRestantes;
     private int tiempoDisparo = 0;
-    private int intervaloDisparo = 15;
+    private int intervaloDisparo = 19;
     private int scoreDeActivacion = 300;
 
     public BalasDiagonales() {
-        this.disparosRestantes = 60; // Número de disparos del power-up
+        this.disparosRestantes = 80; // Número de disparos del power-up
     }
 
     @Override
@@ -46,11 +46,11 @@ public class BalasDiagonales implements EstrategiaDisparo {
                 float y = nave.getSprite().getY() + nave.getSprite().getHeight();
 
                 // Disparar dos balas adicionales a los lados
-                balasGeneradas.add(director.construir(x - 5, y, 0, 6, txBala));
-                balasGeneradas.add(director.construir(x - 25, y - 5, 0, 6, txBala));
-                balasGeneradas.add(director.construir(x + 15, y - 5, 0, 6, txBala));
-                balasGeneradas.add(director.construir(x - 25, y - 5, -5, 6, txBala));
-                balasGeneradas.add(director.construir(x + 15, y - 5, 5, 6, txBala));
+                balasGeneradas.add(director.construir(x - 5, y, 0, 8, txBala));
+                balasGeneradas.add(director.construir(x - 25, y - 5, 0, 8, txBala));
+                balasGeneradas.add(director.construir(x + 15, y - 5, 0, 8, txBala));
+                balasGeneradas.add(director.construir(x - 25, y - 5, -5, 8, txBala));
+                balasGeneradas.add(director.construir(x + 15, y - 5, 5, 8, txBala));
                 disparosRestantes--; // Reducir los disparos restantes
             }
 
@@ -78,6 +78,6 @@ public class BalasDiagonales implements EstrategiaDisparo {
     }
 
     public void refrescar(){
-        this.disparosRestantes = 60;
+        this.disparosRestantes = 80;
     }
 }

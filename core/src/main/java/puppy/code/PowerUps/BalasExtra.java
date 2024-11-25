@@ -16,7 +16,7 @@ import java.util.List;
 public class BalasExtra implements EstrategiaDisparo {
     private int disparosRestantes;
     private int tiempoDisparo = 0;
-    private int intervaloDisparo = 15;
+    private int intervaloDisparo = 23;
     private int scoreDeActivacion = 100;
 
     public BalasExtra(){
@@ -45,9 +45,9 @@ public class BalasExtra implements EstrategiaDisparo {
                 float y = nave.getSprite().getY() + nave.getSprite().getHeight();
 
                 // Construir las balas
-                balasGeneradas.add(director.construir(x - 5, y, 0, 6, txBala));       // Bala central
-                balasGeneradas.add(director.construir(x - 25, y - 5, 0, 6, txBala)); // Bala izquierda
-                balasGeneradas.add(director.construir(x + 15, y - 5, 0, 6, txBala)); // Bala derecha
+                balasGeneradas.add(director.construir(x - 5, y, 0, 8, txBala));       // Bala central
+                balasGeneradas.add(director.construir(x - 25, y - 5, 0, 8, txBala)); // Bala izquierda
+                balasGeneradas.add(director.construir(x + 15, y - 5, 0, 8, txBala)); // Bala derecha
 
                 disparosRestantes--; // Reducir los disparos restantes
             }

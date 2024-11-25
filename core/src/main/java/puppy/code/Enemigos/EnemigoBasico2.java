@@ -12,12 +12,12 @@ import puppy.code.Proyectiles.Proyectil;
 public class EnemigoBasico2 extends Enemigo {
     public EnemigoBasico2(int x, int y, float tiempoEspera) {
         super(new Texture(Gdx.files.internal("fairy_circle_red.png")), tiempoEspera);
-        setVida(4);
+        setVida(5);
         setHitboxDefault(30);
-        setSpeedDefault(2);
-        setTimeSinceLastDirectionChange(1.5f);
-        setIntervaloCambioDireccion(1.5f);
-        setIntervaloDisparo(20);
+        setSpeedDefault(3);
+        setTimeSinceLastDirectionChange(1.6f);
+        setIntervaloCambioDireccion(1.6f);
+        setIntervaloDisparo(30);
 
         Sprite sprite = new Sprite(new Texture(Gdx.files.internal("fairy_blue.png")));
         sprite.setPosition(x, y);
