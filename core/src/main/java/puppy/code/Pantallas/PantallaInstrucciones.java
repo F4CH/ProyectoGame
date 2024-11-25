@@ -35,8 +35,8 @@ public class PantallaInstrucciones implements Screen{
         game.getFont().draw(game.getBatch(), "Mover la nave: Flechas de Direccion", 120, 600 );
         game.getFont().draw(game.getBatch(), "Disparar : Tecla Z", 120, 550);
         game.getFont().draw(game.getBatch(), "Pausar: Tecla ESC", 120 , 500);
-        game.getFont().draw(game.getBatch(), "Disparo Extra : 50 puntos", 120 , 450);
-        game.getFont().draw(game.getBatch(), "Disparo Diagonal : 100 puntos", 120 , 400);
+        game.getFont().draw(game.getBatch(), "Disparos Extra : 100 puntos", 120 , 450);
+        game.getFont().draw(game.getBatch(), "Disparos Diagonales : 300 puntos", 120 , 400);
         game.getFont().draw(game.getBatch(), "Vida Extra : 300 Puntos", 120, 350);
         game.getFont().draw(game.getBatch(), "Objetivo:", 100, 250);
         game.getFont().draw(game.getBatch(), "Eliminar a los enemigos y evitar que te golpeen para obtener la mayor puntuacion", 120, 200);
